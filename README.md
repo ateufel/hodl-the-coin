@@ -1,8 +1,6 @@
-# Phaser Boilerplate Project #
+# Hodl the Coin #
 
 ES6 + Phaser Engine
-
-Boot > Preload > Menu > Game/Instructions/Whatever
 
 Maybe update later: https://github.com/lean/phaser-es6-webpack
 
