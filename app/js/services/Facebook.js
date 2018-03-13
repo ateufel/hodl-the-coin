@@ -1,0 +1,36 @@
+import Config from '../config';
+
+const Facebook = {
+	init: function(appId, callback) {
+		window.fbAsyncInit = () => {
+			FB.init({
+				appId: appId,
+				autoLogAppEvents : true,
+				xfbml: true,
+				version: 'v2.5'
+			});
+
+			//FB.Canvas.setAutoGrow();
+
+			if (callback) {
+				callback(false);
+			}
+		};
+
+		(function(d, s, id){
+			let js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = '//connect.facebook.net/en_US/sdk.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	},
+	share: () => {
+		FB.ui({
+			method: 'share',
+			href: Config.serverPath
+		});
+	}
+};
+
+export default Facebook;

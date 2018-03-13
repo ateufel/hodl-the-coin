@@ -1,0 +1,7 @@
+{
+	"short_name": "PhaserGame",
+	"name": "PhaserGame",
+	"start_url": "/index.php",
+	"display": "fullscreen",
+	"orientation": "portrait"
+}

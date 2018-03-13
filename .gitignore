@@ -1,0 +1,10 @@
+node_modules
+build
+plugins
+platforms
+www
+logs
+*.log
+.idea
+.c9
+.DS_Store
