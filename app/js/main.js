@@ -19,7 +19,8 @@ const config = {
 	scene: [
 		Preloader,
 		Game
-	]
+	],
+	antialias: false
 };
 const game =  new Phaser.Game(config);
 
