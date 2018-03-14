@@ -20,7 +20,8 @@ const config = {
 		Preloader,
 		Game
 	],
-	antialias: false
+	antialias: false,
+	pixelArt: true
 };
 const game =  new Phaser.Game(config);
 
