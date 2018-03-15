@@ -55,8 +55,6 @@ export default class Game extends Phaser.Scene {
 
 		this.txtScore = this.make.text(configText);
 
-		this.camera3D = this.cameras3d.add(55).setPosition(0, -50, 200).setPixelScale(32);
-
 		this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
 	}
@@ -128,7 +126,7 @@ export default class Game extends Phaser.Scene {
 			};
 			const playerAnimation = this.anims.create(configPlayerAnimation);
 			this.player = this.physics.add.sprite(this.screenWidth * 0.2, this.screenHeight * 0.5, 'coin').setVelocity(0, 0).setGravity(0, 2500);
-			this.player.setOrigin(0.5, 0.5); //TODO does not really work, ask in the game forum
+			//this.player.setOrigin(0.5, 0.5); //TODO does not really work, ask in the game forum
 			this.player.setCircle(44);
 			this.player.play('coinflap');
 			this.player.setCollideWorldBounds(true);
@@ -146,6 +144,9 @@ export default class Game extends Phaser.Scene {
 			this.player.x = this.screenWidth * 0.2;
 			this.player.y = this.screenHeight * 0.5;
 		}
+
+		//this.camera3D = this.cameras3d.add(55).setPosition(0, -50, 200).setPixelScale(32);
+		//const test = this.camera3D.create(0, 0, 0, 'background');
 	}
 	addPipes() {
 		const pipeGap = this.screenHeight / 2.5;
