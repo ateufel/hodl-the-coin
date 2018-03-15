@@ -19,6 +19,7 @@ export default class Game extends Phaser.Scene {
 		this.isDead = false;
 		this.txtScore = null;
 		this.currentScore = 0;
+		this.camera3D = null;
 	}
 	preload () {
 		this.load.image('background', 'img/background.png');
@@ -53,6 +54,8 @@ export default class Game extends Phaser.Scene {
 		};
 
 		this.txtScore = this.make.text(configText);
+
+		this.camera3D = this.cameras3d.add(55).setPosition(0, -50, 200).setPixelScale(32);
 
 		this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
@@ -104,6 +107,8 @@ export default class Game extends Phaser.Scene {
 		}
 		this.rectOverlay = new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight * 0.66);
 
+
+
 		if (!this.background) {
 			this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
 			this.background.displayWidth = this.screenWidth;
@@ -123,6 +128,8 @@ export default class Game extends Phaser.Scene {
 			};
 			const playerAnimation = this.anims.create(configPlayerAnimation);
 			this.player = this.physics.add.sprite(this.screenWidth * 0.2, this.screenHeight * 0.5, 'coin').setVelocity(0, 0).setGravity(0, 2500);
+			this.player.setOrigin(0.5, 0.5); //TODO does not really work, ask in the game forum
+			this.player.setCircle(44);
 			this.player.play('coinflap');
 			this.player.setCollideWorldBounds(true);
 
