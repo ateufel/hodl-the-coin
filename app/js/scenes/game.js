@@ -1,4 +1,5 @@
 import Pipe from '../sprites/pipe';
+import Coin from '../sprites/coin';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
@@ -16,7 +17,6 @@ export default class Game extends Phaser.Scene {
 		this.player = null;
 		this.background = null;
 		this.pipes = [];
-		this.isDead = false;
 		this.txtScore = null;
 		this.currentScore = 0;
 		this.camera3D = null;
@@ -59,7 +59,7 @@ export default class Game extends Phaser.Scene {
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
-		/*if (this.isDead) {
+		/*if (this.player.isDead) {
 			return;
 		}*/
 		this.graphics.clear();
@@ -105,8 +105,6 @@ export default class Game extends Phaser.Scene {
 		}
 		this.rectOverlay = new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight * 0.66);
 
-
-
 		if (!this.background) {
 			this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
 			this.background.displayWidth = this.screenWidth;
@@ -117,28 +115,10 @@ export default class Game extends Phaser.Scene {
 		}
 
 		if (!this.player) {
-			//TODO create a separate player class that extends sprite
-			const configPlayerAnimation = {
-				key: 'coinflap',
-				frames: this.anims.generateFrameNumbers('coin', {start: 0, end: 4}),
-				frameRate: 20,
-				repeat: -1
-			};
-			const playerAnimation = this.anims.create(configPlayerAnimation);
-			this.player = this.physics.add.sprite(this.screenWidth * 0.2, this.screenHeight * 0.5, 'coin').setVelocity(0, 0).setGravity(0, 2500);
-			//this.player.setOrigin(0.5, 0.5); //TODO does not really work, ask in the game forum
-			this.player.setCircle(44);
-			this.player.play('coinflap');
-			this.player.setCollideWorldBounds(true);
-
-			this.input.on('pointerdown', () => {
-				if (this.isDead) {
-					return;
-				}
-				this.player.setVelocity(0, -600);
-				//increase frameRate for a tick
-				playerAnimation.frameRate = 30;
-				this.player.play('coinflap');
+			this.player = new Coin({
+				scene: this,
+				x: this.screenWidth * 0.2,
+				y: this.screenHeight * 0.5
 			});
 		} else {
 			this.player.x = this.screenWidth * 0.2;
@@ -168,7 +148,7 @@ export default class Game extends Phaser.Scene {
 		}));
 	}
 	increaseScore() {
-		if (!this.isDead) {
+		if (!this.player.isDead) {
 			this.currentScore++;
 			this.txtScore.setText(this.currentScore);
 		}
@@ -177,11 +157,11 @@ export default class Game extends Phaser.Scene {
 		this.sys.game.events.off('resize', this.resize, this);
 	}
 	gameOver() {
-		if (this.isDead) {
+		if (this.player.isDead) {
 			return;
 		}
 		alert('game over');
-		this.isDead = true;
+		this.player.isDead = true;
 		/*this.pipes.children.entries.forEach(
 			(sprite) => {
 				sprite.stop();

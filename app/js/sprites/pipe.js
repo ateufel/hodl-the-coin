@@ -1,4 +1,3 @@
-//https://phaser.io/phaser3/api/image
 export default class Pipe extends Phaser.GameObjects.Sprite {
 	constructor(config) {
 		super(config.scene, config.x, config.y, `pipe_${config.type}`);
