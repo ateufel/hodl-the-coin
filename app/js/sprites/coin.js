@@ -9,7 +9,6 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		this.body.setCollideWorldBounds(true);
 		this.setOrigin(0.5, 0.5);
 		//this.setScale(6);
-		//this.player.play('coinflap');
 		this.isDead = false;
 
 		const configPlayerAnimation = {
