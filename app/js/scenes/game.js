@@ -27,7 +27,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('background', 'img/background.png');
 		this.load.image('pipe_green', 'img/pipe_green.png');
 		this.load.image('pipe_red', 'img/pipe_red.png');
-		this.load.image('bg_ellipse', 'img/ellipse.png');
+		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
 		this.load.spritesheet('coin', 'img/coin.png', {frameWidth: 200, frameHeight: 88});
 	}
 	create() {
@@ -39,12 +39,12 @@ export default class Game extends Phaser.Scene {
 			fillStyle: {color: 0xffffff}
 		});
 
-		this.camera3D = this.cameras3d.add(60).setPosition(0, -60, 200).setPixelScale(1024);
-		//const test = this.camera3D.create(0, 0, 0, 'bg_ellipse');
-		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
-		for (let i = 0; i < this.bgElements.length; i++) {
+		//create 3d camera with animated floor elements
+		this.camera3D = this.cameras3d.add(70).setPosition(0, -60, 200).setPixelScale(2048);
+		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 64, 'bg_ellipse');
+		/*for (let i = 0; i < this.bgElements.length; i++) {
 			this.bgElements[i].gameObject.setBlendMode(Phaser.BlendModes.ADD);
-		}
+		}*/
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
 
 		this.player = new Coin({
