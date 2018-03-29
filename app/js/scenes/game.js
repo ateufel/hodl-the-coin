@@ -41,7 +41,7 @@ export default class Game extends Phaser.Scene {
 
 		this.camera3D = this.cameras3d.add(60).setPosition(0, -60, 200).setPixelScale(1024);
 		//const test = this.camera3D.create(0, 0, 0, 'bg_ellipse');
-		this.bgElements = this.camera3D.createRect({x: 10, y: 1, z: 20}, 32, 'bg_ellipse');
+		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
 		for (let i = 0; i < this.bgElements.length; i++) {
 			this.bgElements[i].gameObject.setBlendMode(Phaser.BlendModes.ADD);
 		}
@@ -73,30 +73,14 @@ export default class Game extends Phaser.Scene {
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
-		//this.camera3D.x += delta / 5;
-
+		//animate background - TODO: put this in a separate background class
 		for (let i = 0; i < this.bgElements.length; i++) {
 			let segment = this.bgElements[i];
-			segment.x -= delta / 5;
-			if (segment.x < (this.camera3D.x + 32)) {
+			segment.x -= 0.6;
+			if (segment.x <= -this.startX) {
 				segment.x = this.startX;
 			}
 		}
-
-		/*if (this.player.isDead) {
-			return;
-		}*/
-		/*this.graphics.clear();
-
-		for (let i = 0; i < this.lineCount; i++) {
-			this.graphics.strokeLineShape(this.lines[i]);
-			Phaser.Geom.Line.RotateAroundPoint(this.lines[i], this.rotationPoint, 0.008);
-		}
-		for (let i = 0; i < 7; i++) {
-			this.graphics.strokeLineShape(this.horizontalLines[i]);
-		}
-
-		this.graphics.fillRectShape(this.rectOverlay);*/
 
 		this.pipes.children.entries.forEach(
 			(sprite) => {
@@ -112,24 +96,8 @@ export default class Game extends Phaser.Scene {
 	resize() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
-		//this.rotationPoint = {x: this.screenWidth / 2, y: this.screenHeight / 4};
-		//this.lines = [];
-		//this.horizontalLines = [];
 
-		//this.physics.world.setBounds(0, 0, this.screenWidth * 1000, this.screenHeight);
-
-		/*for (let i = 0; i < this.lineCount; i++) {
-			this.lines.push(new Phaser.Geom.Line(this.screenWidth / 2, this.screenHeight / 3, this.screenWidth / 2, this.screenHeight * 2));
-			Phaser.Geom.Line.RotateAroundPoint(this.lines[i], this.rotationPoint, i * (Phaser.Math.PI2 / this.lineCount));
-		}
-		for (let i = 0; i < 7; i++) {
-			let yDelta = i * this.screenHeight / 10;
-			yDelta = yDelta / (i + 1) * 4;
-			this.horizontalLines.push(new Phaser.Geom.Line(0, this.screenHeight - yDelta, this.screenWidth, this.screenHeight - yDelta));
-		}
-		this.rectOverlay = new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight * 0.66);
-
-		if (!this.background) {
+		/*if (!this.background) {
 			this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
 			this.background.displayWidth = this.screenWidth;
 			this.background.displayHeight = this.screenHeight * 0.66;
@@ -181,8 +149,8 @@ export default class Game extends Phaser.Scene {
 		if (this.player.isDead) {
 			return;
 		}
-		alert('game over');
-		this.player.isDead = true;
+		//alert('game over');
+		//this.player.isDead = true;
 		/*this.pipes.children.entries.forEach(
 			(sprite) => {
 				sprite.stop();
