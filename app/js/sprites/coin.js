@@ -3,15 +3,14 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		super(config.scene, config.x, config.y, 'coin');
 		config.scene.physics.world.enable(this);
 		config.scene.add.existing(this);
+		this.body.setCollideWorldBounds(true);
 		this.body.setVelocity(0, 0);
 		this.body.setGravity(0, 2500);
+		this.body.setSize(90, 90, true);
 		this.body.setCircle(44);
-		this.body.setCollideWorldBounds(true);
-		this.setOrigin(0.5, 0.5);
+		this.setOrigin(0.5);
 		this.setScale(0.8);
 		this.isDead = false;
-
-		//console.log(this.body.height);
 
 		const configPlayerAnimation = {
 			key: 'coinflap',
