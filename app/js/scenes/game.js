@@ -47,7 +47,12 @@ export default class Game extends Phaser.Scene {
 		}
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
 
-		this.resize();
+		this.player = new Coin({
+			scene: this,
+			x: this.screenWidth * 0.2,
+			y: this.screenHeight * 0.5
+		});
+
 		this.pipes = this.add.group();
 		this.timedEvent = this.time.addEvent({
 			delay: 1500,
@@ -69,7 +74,7 @@ export default class Game extends Phaser.Scene {
 
 		this.txtScore = this.make.text(configText);
 
-		this.sys.game.events.on('resize', this.resize, this);
+		//this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
@@ -88,38 +93,33 @@ export default class Game extends Phaser.Scene {
 			}
 		);
 
+		this.player.update();
+
 		//TODO this does not work, use world collide event?
 		/*if(this.player.y > this.cameras.main.height) {
 			this.gameOver();
 		}*/
 	}
-	resize() {
+	/*resize() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
-		/*if (!this.background) {
+		/!*if (!this.background) {
 			this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
 			this.background.displayWidth = this.screenWidth;
 			this.background.displayHeight = this.screenHeight * 0.66;
 		} else {
 			//TODO set background size
 			//this.background
-		}*/
+		}*!/
 
-		if (!this.player) {
-			this.player = new Coin({
-				scene: this,
-				x: this.screenWidth * 0.2,
-				y: this.screenHeight * 0.5
-			});
-		} else {
-			this.player.x = this.screenWidth * 0.2;
-			this.player.y = this.screenHeight * 0.5;
-		}
-	}
+		this.player.x = this.screenWidth * 0.2;
+		this.player.y = this.screenHeight * 0.5;
+	}*/
 	addPipes() {
-		const pipeGap = this.screenHeight / 2.5;
-		const yPipe = Math.random() * (this.screenHeight - 390 - pipeGap - 390);
+		//set pipe gap big enough for the player/coin
+		const pipeGap = this.player.getHeight() * 3;
+		const yPipe = Math.random() * (this.screenHeight - 732 - pipeGap - 732);
 
 		this.pipes.add(new Pipe({
 			scene: this,
@@ -132,8 +132,7 @@ export default class Game extends Phaser.Scene {
 			scene: this,
 			type: 'green',
 			x: this.screenWidth,
-			//y: 390 + pipeGap
-			y: yPipe + 390 + pipeGap
+			y: yPipe + 732 + pipeGap
 		}));
 	}
 	increaseScore() {

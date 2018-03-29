@@ -8,8 +8,10 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		this.body.setCircle(44);
 		this.body.setCollideWorldBounds(true);
 		this.setOrigin(0.5, 0.5);
-		//this.setScale(6);
+		this.setScale(0.8);
 		this.isDead = false;
+
+		//console.log(this.body.height);
 
 		const configPlayerAnimation = {
 			key: 'coinflap',
@@ -32,5 +34,8 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 	}
 	update() {
 
+	}
+	getHeight() {
+		return this.body.height;
 	}
 }
