@@ -87,12 +87,12 @@ export default class Game extends Phaser.Scene {
 			}
 		}
 
+		//update sub-components
 		this.pipes.children.entries.forEach(
 			(sprite) => {
 				sprite.update();
 			}
 		);
-
 		this.player.update();
 
 		//TODO this does not work, use world collide event?
@@ -119,12 +119,7 @@ export default class Game extends Phaser.Scene {
 	addPipes() {
 		//set pipe gap big enough for the player/coin
 		const pipeGap = this.player.getHeight() * 4;
-		let yPipeOffset = 0;
-		if ((this.screenHeight - pipeGap) < 732) {
-			//apply offset for smaller screen
-			yPipeOffset = this.screenHeight - 732 - pipeGap;
-		}
-		const yPipe = (Math.random() * (this.screenHeight - 732 - pipeGap - 732)) - yPipeOffset;
+		const yPipe = (Math.random() * (this.screenHeight -  pipeGap)) - 732;
 
 		//add 2 pipes
 		this.pipes.add(new Pipe({
