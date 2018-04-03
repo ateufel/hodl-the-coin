@@ -118,7 +118,7 @@ export default class Game extends Phaser.Scene {
 	}*/
 	addPipes() {
 		//set pipe gap big enough for the player/coin
-		const pipeGap = this.player.getHeight() * 4;
+		const pipeGap = this.player.getHeight() * 5;
 		const yPipe = (Math.random() * (this.screenHeight -  pipeGap)) - 732;
 
 		//add 2 pipes

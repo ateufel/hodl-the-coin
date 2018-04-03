@@ -1,7 +1,9 @@
 {
-	"short_name": "PhaserGame",
-	"name": "PhaserGame",
-	"start_url": "/index.php",
+	"short_name": "HodlTheCoin",
+	"name": "Hodl The Coin",
+	"start_url": "/index.html",
 	"display": "fullscreen",
-	"orientation": "portrait"
+	"orientation": "portrait",
+	"background_color": "#000",
+	"theme_color": "pink"
 }
