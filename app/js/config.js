@@ -12,6 +12,18 @@ const Config = {
 		ogImage: 'https://limesoda.lsapps.at/limeapp/img/share.jpg',
 		ogImageWidth: 1200,
 		ogImageHeight: 630
+	},
+	fonts: {
+		score: {
+			fontFamily: 'MunroSmall',
+			fontSize: 128,
+			color: '#fbf201'
+		},
+		tapToStart: {
+			fontFamily: 'MunroSmall',
+			fontSize: 64,
+			color: '#fbf201'
+		}
 	}
 };
 

@@ -4,7 +4,7 @@ import Game from './scenes/game';
 import styles from '../css/main.css';
 
 const config = {
-	width: window.innerWidth,
+	width: window.innerWidth < 810 ? window.innerWidth : 810,
 	height: window.innerHeight,
 	parent: 'canvas',
 	type: Phaser.AUTO,
@@ -21,7 +21,8 @@ const config = {
 		Game
 	],
 	antialias: false,
-	pixelArt: true
+	pixelArt: true,
+	fps: 60
 };
 const game =  new Phaser.Game(config);
 

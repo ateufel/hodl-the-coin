@@ -22,7 +22,6 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<div class="font-hack">...</div>
 <% if (htmlWebpackPlugin.options.unsupportedBrowser) { %><style>.unsupported-browser { display: none; }</style><div class="unsupported-browser">Sorry, your browser is not supported. Please upgrade to the latest version or switch your browser to use this site. See <a href="http://outdatedbrowser.com/">outdatedbrowser.com</a> for options.</div><% } %>
 <% if (htmlWebpackPlugin.options.appMountId) { %><div id="<%= htmlWebpackPlugin.options.appMountId %>"></div><% } %>
 <% for (item of htmlWebpackPlugin.options.appMountIds) { %>

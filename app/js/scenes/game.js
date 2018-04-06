@@ -1,5 +1,6 @@
 import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
+import Config from '../config';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
@@ -7,13 +8,8 @@ export default class Game extends Phaser.Scene {
 			key: 'Game'
 		});
 		this.graphics = null;
-		/*this.lines = [];
-		this.horizontalLines = [];
-		this.rectOverlay = null;
-		this.lineCount = 20;*/
 		this.screenWidth = null;
 		this.screenHeight = null;
-		//this.rotationPoint = null;
 		this.player = null;
 		this.background = null;
 		this.pipes = [];
@@ -22,6 +18,7 @@ export default class Game extends Phaser.Scene {
 		this.camera3D = null;
 		this.bgElements = [];
 		this.startX = 0;
+		this.isRunning = false;
 	}
 	preload () {
 		this.load.image('background', 'img/background.png');
@@ -40,17 +37,14 @@ export default class Game extends Phaser.Scene {
 		});
 
 		//create 3d camera with animated floor elements
-		this.camera3D = this.cameras3d.add(70).setPosition(0, -60, 200).setPixelScale(2048);
-		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 64, 'bg_ellipse');
-		/*for (let i = 0; i < this.bgElements.length; i++) {
-			this.bgElements[i].gameObject.setBlendMode(Phaser.BlendModes.ADD);
-		}*/
+		this.camera3D = this.cameras3d.add(70).setPosition(0, -55, 200).setPixelScale(2048);
+		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
 
 		this.player = new Coin({
 			scene: this,
 			x: this.screenWidth * 0.2,
-			y: this.screenHeight * 0.5
+			y: this.screenHeight * 0.3
 		});
 
 		this.pipes = this.add.group();
@@ -61,23 +55,30 @@ export default class Game extends Phaser.Scene {
 			loop: true
 		});
 
-		const configText = {
-			x: 20,
-			y: 20,
-			text: '0',
-			style: {
-				font: '64px Arial',
-				fill: '#ffffff',
-				align: 'left'
-			}
-		};
+		this.txtScore = this.add.text(this.screenWidth / 2, 60, '0', Config.fonts.score);
+		this.txtScore.setShadow(0, 4, '#e79617', 0);
+		this.txtScore.setOrigin(0.5);
+		this.txtScore.visible = false;
+		this.txtStartGame = this.add.text(this.screenWidth / 2, this.screenHeight / 2, 'TAP TO START', Config.fonts.tapToStart);
+		this.txtStartGame.setShadow(0, 4, '#e79617', 0);
+		this.txtStartGame.setOrigin(0.5);
+		this.txtStartGame.setInteractive();
+		this.txtStartGame.on('clicked', this.startGame, this);
 
-		this.txtScore = this.make.text(configText);
+		this.input.on('gameobjectup', (pointer, gameObject) => {
+			gameObject.emit('clicked', gameObject);
+		}, this);
 
 		//this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
+		//TODO do stuff while not running
+
+		if (!this.isRunning) {
+			return;
+		}
+
 		//animate background - TODO: put this in a separate background class
 		for (let i = 0; i < this.bgElements.length; i++) {
 			let segment = this.bgElements[i];
@@ -117,6 +118,9 @@ export default class Game extends Phaser.Scene {
 		this.player.y = this.screenHeight * 0.5;
 	}*/
 	addPipes() {
+		if (!this.isRunning) {
+			return;
+		}
 		//set pipe gap big enough for the player/coin
 		const pipeGap = this.player.getHeight() * 5;
 		const yPipe = (Math.random() * (this.screenHeight -  pipeGap)) - 732;
@@ -134,6 +138,7 @@ export default class Game extends Phaser.Scene {
 			x: this.screenWidth,
 			y: yPipe + 732 + pipeGap
 		}));
+		this.txtScore.setDepth(1);
 	}
 	increaseScore() {
 		if (!this.player.isDead) {
@@ -155,5 +160,14 @@ export default class Game extends Phaser.Scene {
 				sprite.stop();
 			}
 		);*/
+	}
+	startGame() {
+		//TODO remove menu items with animation
+		//TODO rotate and move player coin to initial position for game
+		//TODO start game (isRunning = true) to scroll background and create pipes
+		this.player.startGame();
+		this.isRunning = true;
+		this.txtScore.visible = true;
+		this.txtStartGame.visible = false;
 	}
 }
