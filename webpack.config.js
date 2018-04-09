@@ -20,6 +20,7 @@ module.exports = {
 		stats: 'errors-only',
 		host: HOST,
 		port: PORT,
+		https: true,
 		inline: true,
 		contentBase: path.join(__dirname, 'build'),
 		/*proxy: {

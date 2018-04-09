@@ -25,7 +25,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('pipe_green', 'img/pipe_green.png');
 		this.load.image('pipe_red', 'img/pipe_red.png');
 		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
-		this.load.spritesheet('coin', 'img/coin.png', {frameWidth: 200, frameHeight: 88});
+		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
@@ -60,10 +60,22 @@ export default class Game extends Phaser.Scene {
 		this.txtScore.setOrigin(0.5);
 		this.txtScore.visible = false;
 		this.txtStartGame = this.add.text(this.screenWidth / 2, this.screenHeight / 2, 'TAP TO START', Config.fonts.tapToStart);
-		this.txtStartGame.setShadow(0, 4, '#e79617', 0);
+		this.txtStartGame.setShadow(0, 4, Config.fonts.tapToStart.shadow, 0);
 		this.txtStartGame.setOrigin(0.5);
 		this.txtStartGame.setInteractive();
 		this.txtStartGame.on('clicked', this.startGame, this);
+		this.txtLikeGame = this.add.text(this.screenWidth / 2, this.screenHeight - 200, 'LIKE THIS GAME?', Config.fonts.likeGame);
+		this.txtLikeGame.setShadow(0, 4, Config.fonts.likeGame.shadow, 0);
+		this.txtLikeGame.setOrigin(0.5);
+		this.txtFollowSteemit = this.add.text(this.screenWidth / 2, this.screenHeight - 150, 'FOLLOW US ON STEEMIT', Config.fonts.followSteemit);
+		this.txtFollowSteemit.setShadow(0, 2, Config.fonts.followSteemit.shadow, 0);
+		this.txtFollowSteemit.setOrigin(0.5);
+		this.txtFollowSteemit.setInteractive();
+		this.txtFollowSteemit.on('clicked', this.openSteemit, this);
+		this.txtPoweredBy = this.add.text(this.screenWidth / 2, this.screenHeight - 50, 'POWERED BY LIMESODA', Config.fonts.poweredBy);
+		this.txtPoweredBy.setOrigin(0.5);
+		this.txtPoweredBy.setInteractive();
+		this.txtPoweredBy.on('clicked', this.openLimeSoda, this);
 
 		this.input.on('gameobjectup', (pointer, gameObject) => {
 			gameObject.emit('clicked', gameObject);
@@ -169,5 +181,13 @@ export default class Game extends Phaser.Scene {
 		this.isRunning = true;
 		this.txtScore.visible = true;
 		this.txtStartGame.visible = false;
+		this.txtLikeGame.visible = false;
+		this.txtFollowSteemit.visible = false;
+	}
+	openSteemit() {
+		window.location.href = 'https://www.steemit.com/@limesoda';
+	}
+	openLimeSoda() {
+		window.location.href = 'https://www.limesoda.com';
 	}
 }

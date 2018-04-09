@@ -38,6 +38,7 @@ ul {
 #canvas {
 	width: 810px;
 	height: 100%;
+	margin: auto;
 }
 
 @media (max-width: 810px) {

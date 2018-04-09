@@ -16,13 +16,31 @@ const Config = {
 	fonts: {
 		score: {
 			fontFamily: 'MunroSmall',
-			fontSize: 128,
+			fontSize: 64,
 			color: '#fbf201'
 		},
 		tapToStart: {
 			fontFamily: 'MunroSmall',
-			fontSize: 64,
-			color: '#fbf201'
+			fontSize: 48,
+			color: '#fbf201',
+			shadow: '#e79617'
+		},
+		likeGame: {
+			fontFamily: 'MunroSmall',
+			fontSize: 48,
+			color: '#aa96fb',
+			shadow: '#5947a0'
+		},
+		followSteemit: {
+			fontFamily: 'MunroSmall',
+			fontSize: 26,
+			color: '#aa96fb',
+			shadow: '#5947a0'
+		},
+		poweredBy: {
+			fontFamily: 'MunroSmall',
+			fontSize: 26,
+			color: '#aa96fb'
 		}
 	}
 };
