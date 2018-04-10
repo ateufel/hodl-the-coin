@@ -17,7 +17,8 @@ const Config = {
 		score: {
 			fontFamily: 'MunroSmall',
 			fontSize: 64,
-			color: '#fbf201'
+			color: '#fbf201',
+			shadow: '#e79617'
 		},
 		tapToStart: {
 			fontFamily: 'MunroSmall',
@@ -41,6 +42,18 @@ const Config = {
 			fontFamily: 'MunroSmall',
 			fontSize: 26,
 			color: '#5947a0'
+		},
+		gameOverScoreMeta: {
+			fontFamily: 'MunroSmall',
+			fontSize: 48,
+			color: '#aa96fb',
+			shadow: '#5947a0'
+		},
+		gameOverScoreValues: {
+			fontFamily: 'MunroSmall',
+			fontSize: 48,
+			color: '#fbf201',
+			shadow: '#e79617'
 		}
 	}
 };

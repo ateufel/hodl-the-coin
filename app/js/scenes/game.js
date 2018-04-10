@@ -26,6 +26,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('pipe_red', 'img/pipe_red.png');
 		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
 		this.load.image('headline', 'img/headline.png');
+		this.load.image('gameover', 'img/gameover.png');
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
 	}
 	create() {
@@ -58,7 +59,7 @@ export default class Game extends Phaser.Scene {
 
 		//score view
 		this.txtScore = this.add.text(this.screenWidth / 2, 60, '0', Config.fonts.score);
-		this.txtScore.setShadow(0, 4, '#e79617', 0);
+		this.txtScore.setShadow(0, 4, Config.fonts.score.shadow, 0);
 		this.txtScore.setOrigin(0.5);
 		this.txtScore.visible = false;
 
@@ -78,16 +79,50 @@ export default class Game extends Phaser.Scene {
 		this.txtFollowSteemit.setOrigin(0.5);
 		this.txtFollowSteemit.setInteractive();
 		this.txtFollowSteemit.on('clicked', this.openSteemit, this);
-		this.txtPoweredBy = this.add.text(this.screenWidth / 2, this.screenHeight - 50, 'POWERED BY LIMESODA', Config.fonts.poweredBy);
-		this.txtPoweredBy.setOrigin(0.5);
-		this.txtPoweredBy.setInteractive();
-		this.txtPoweredBy.on('clicked', this.openLimeSoda, this);
+		//start menu group
 		this.groupStartMenu = this.add.group();
 		this.groupStartMenu.add(this.headline);
 		this.groupStartMenu.add(this.txtStartGame);
 		this.groupStartMenu.add(this.txtLikeGame);
 		this.groupStartMenu.add(this.txtFollowSteemit);
-		this.groupStartMenu.add(this.txtPoweredBy);
+
+		//game over
+		let rectOverlay = this.add.graphics({fillStyle: {color: 0x000000}});
+		rectOverlay.fillRectShape(new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight));
+		rectOverlay.alpha = 0.8;
+		this.gameover = this.add.image(this.screenWidth / 2, 150, 'gameover');
+		this.gameover.setScale(0.4);
+		this.txtGameOverScoreMeta = this.add.text(this.screenWidth / 2 - 10, 250, 'SCORE', Config.fonts.gameOverScoreMeta);
+		this.txtGameOverScoreMeta.setShadow(0, 4, Config.fonts.gameOverScoreMeta.shadow, 0);
+		this.txtGameOverScoreMeta.setOrigin(1, 0);
+		this.txtGameOverScore = this.add.text(this.screenWidth / 2 + 10, 250, '0', Config.fonts.gameOverScoreValues);
+		this.txtGameOverScore.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
+		this.txtGameOverScore.setOrigin(0, 0);
+		this.txtGameOverScoreMetaBest = this.add.text(this.screenWidth / 2 - 10, 300, 'BEST', Config.fonts.gameOverScoreMeta);
+		this.txtGameOverScoreMetaBest.setShadow(0, 4, Config.fonts.gameOverScoreMeta.shadow, 0);
+		this.txtGameOverScoreMetaBest.setOrigin(1, 0);
+		this.txtGameOverScoreBest = this.add.text(this.screenWidth / 2 + 10, 300, '0', Config.fonts.gameOverScoreValues);
+		this.txtGameOverScoreBest.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
+		this.txtGameOverScoreBest.setOrigin(0, 0);
+		//game over group
+		this.groupGameOver = this.add.group();
+		this.groupGameOver.add(rectOverlay);
+		this.groupGameOver.add(this.gameover);
+		this.groupGameOver.add(this.txtGameOverScoreMeta);
+		this.groupGameOver.add(this.txtGameOverScore);
+		this.groupGameOver.add(this.txtGameOverScoreMetaBest);
+		this.groupGameOver.add(this.txtGameOverScoreBest);
+		this.groupGameOver.children.entries.forEach(
+			(sprite) => {
+				sprite.visible = false;
+			}
+		);
+
+		//general menu stuff
+		this.txtPoweredBy = this.add.text(this.screenWidth / 2, this.screenHeight - 50, 'POWERED BY LIMESODA', Config.fonts.poweredBy);
+		this.txtPoweredBy.setOrigin(0.5);
+		this.txtPoweredBy.setInteractive();
+		this.txtPoweredBy.on('clicked', this.openLimeSoda, this);
 
 		this.showStartMenu();
 
@@ -182,6 +217,11 @@ export default class Game extends Phaser.Scene {
 				sprite.visible = true;
 			}
 		);
+		this.groupGameOver.children.entries.forEach(
+			(sprite) => {
+				sprite.visible = false;
+			}
+		);
 	}
 	shutdown() {
 		this.sys.game.events.off('resize', this.resize, this);
@@ -198,6 +238,18 @@ export default class Game extends Phaser.Scene {
 				sprite.stop();
 			}
 		);
+		this.txtGameOverScore.setText(this.currentScore);
+		this.groupGameOver.children.entries.forEach(
+			(sprite) => {
+				sprite.visible = true;
+			}
+		);
+		this.txtPoweredBy.visible = true;
+		this.txtScore.visible = false;
+		this.player.visible = false;
+
+		this.groupGameOver.setDepth(1);
+		this.txtPoweredBy.setDepth(1);
 	}
 	startGame() {
 		//TODO remove menu items with animation and then start game (after a small timeout)
@@ -213,6 +265,7 @@ export default class Game extends Phaser.Scene {
 
 		this.player.startGame();
 		this.isRunning = true;
+		this.txtPoweredBy.visible = false;
 		this.txtScore.visible = true;
 
 		this.groupStartMenu.children.entries.forEach(
