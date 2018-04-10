@@ -29,7 +29,6 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		return this.body.height;
 	}
 	startGame() {
-		//TODO rotate to zero and start game
 		this.body.setGravity(0, 2500);
 
 		this.scene.input.on('pointerdown', () => {

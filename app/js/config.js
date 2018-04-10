@@ -40,7 +40,7 @@ const Config = {
 		poweredBy: {
 			fontFamily: 'MunroSmall',
 			fontSize: 26,
-			color: '#aa96fb'
+			color: '#5947a0'
 		}
 	}
 };

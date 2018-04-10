@@ -30,7 +30,7 @@ export default class Pipe extends Phaser.GameObjects.Sprite {
 		this.scene.gameOver();
 	};
 	stop = () => {
-		this.setVelocity(0, 0);
+		this.body.setVelocity(0, 0);
 	};
 	/*getPipeHeight() {
 		var ground = this.game.cache.getItem(BOTTOM_KEY, Phaser.Cache.IMAGE);

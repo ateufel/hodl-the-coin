@@ -25,6 +25,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('pipe_green', 'img/pipe_green.png');
 		this.load.image('pipe_red', 'img/pipe_red.png');
 		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
+		this.load.image('headline', 'img/headline.png');
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
 	}
 	create() {
@@ -43,7 +44,7 @@ export default class Game extends Phaser.Scene {
 
 		this.player = new Coin({
 			scene: this,
-			x: this.screenWidth * 0.2,
+			x: this.screenWidth * 0.3,
 			y: this.screenHeight * 0.3
 		});
 
@@ -55,10 +56,15 @@ export default class Game extends Phaser.Scene {
 			loop: true
 		});
 
+		//score view
 		this.txtScore = this.add.text(this.screenWidth / 2, 60, '0', Config.fonts.score);
 		this.txtScore.setShadow(0, 4, '#e79617', 0);
 		this.txtScore.setOrigin(0.5);
 		this.txtScore.visible = false;
+
+		//start menu
+		this.headline = this.add.image(this.screenWidth / 2, 150, 'headline');
+		this.headline.setScale(0.4);
 		this.txtStartGame = this.add.text(this.screenWidth / 2, this.screenHeight / 2, 'TAP TO START', Config.fonts.tapToStart);
 		this.txtStartGame.setShadow(0, 4, Config.fonts.tapToStart.shadow, 0);
 		this.txtStartGame.setOrigin(0.5);
@@ -76,6 +82,14 @@ export default class Game extends Phaser.Scene {
 		this.txtPoweredBy.setOrigin(0.5);
 		this.txtPoweredBy.setInteractive();
 		this.txtPoweredBy.on('clicked', this.openLimeSoda, this);
+		this.groupStartMenu = this.add.group();
+		this.groupStartMenu.add(this.headline);
+		this.groupStartMenu.add(this.txtStartGame);
+		this.groupStartMenu.add(this.txtLikeGame);
+		this.groupStartMenu.add(this.txtFollowSteemit);
+		this.groupStartMenu.add(this.txtPoweredBy);
+
+		this.showStartMenu();
 
 		this.input.on('gameobjectup', (pointer, gameObject) => {
 			gameObject.emit('clicked', gameObject);
@@ -134,7 +148,7 @@ export default class Game extends Phaser.Scene {
 			return;
 		}
 		//set pipe gap big enough for the player/coin
-		const pipeGap = this.player.getHeight() * 5;
+		const pipeGap = this.player.getHeight() * 4;
 		const yPipe = (Math.random() * (this.screenHeight -  pipeGap)) - 732;
 
 		//add 2 pipes
@@ -158,31 +172,54 @@ export default class Game extends Phaser.Scene {
 			this.txtScore.setText(this.currentScore);
 		}
 	}
+	showStartMenu() {
+		this.player.angle = 15;
+		this.player.x = this.screenWidth / 2 + 100;
+		this.player.y = 150;
+		this.player.setDepth(1);
+		this.groupStartMenu.children.entries.forEach(
+			(sprite) => {
+				sprite.visible = true;
+			}
+		);
+	}
 	shutdown() {
 		this.sys.game.events.off('resize', this.resize, this);
 	}
 	gameOver() {
-		if (this.player.isDead) {
+		if (this.player.isDead || !this.isRunning) {
 			return;
 		}
 		//alert('game over');
-		//this.player.isDead = true;
-		/*this.pipes.children.entries.forEach(
+		this.player.isDead = true;
+		this.isRunning = false;
+		this.pipes.children.entries.forEach(
 			(sprite) => {
 				sprite.stop();
 			}
-		);*/
+		);
 	}
 	startGame() {
-		//TODO remove menu items with animation
-		//TODO rotate and move player coin to initial position for game
-		//TODO start game (isRunning = true) to scroll background and create pipes
+		//TODO remove menu items with animation and then start game (after a small timeout)
+
+		this.tweens.add({
+			targets: this.player,
+			x: this.screenWidth * 0.3,
+			angle: 0,
+			ease: 'Quad.easeOut',
+			duration: 500,
+			repeat: 0
+		});
+
 		this.player.startGame();
 		this.isRunning = true;
 		this.txtScore.visible = true;
-		this.txtStartGame.visible = false;
-		this.txtLikeGame.visible = false;
-		this.txtFollowSteemit.visible = false;
+
+		this.groupStartMenu.children.entries.forEach(
+			(sprite) => {
+				sprite.visible = false;
+			}
+		);
 	}
 	openSteemit() {
 		window.location.href = 'https://www.steemit.com/@limesoda';
