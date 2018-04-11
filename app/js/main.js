@@ -1,7 +1,11 @@
 import Phaser from 'phaser';
 import Preloader from './scenes/preloader';
+import Leaderboard from './scenes/leaderboard';
 import Game from './scenes/game';
+import Facebook from './services/Facebook';
 import styles from '../css/main.css';
+
+Facebook.init();
 
 const config = {
 	width: window.innerWidth < 810 ? window.innerWidth : 810,
@@ -18,7 +22,8 @@ const config = {
 	},
 	scene: [
 		Preloader,
-		Game
+		Game,
+		Leaderboard
 	],
 	antialias: false,
 	pixelArt: true,

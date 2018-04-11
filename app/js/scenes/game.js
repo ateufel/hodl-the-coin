@@ -1,13 +1,13 @@
 import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
 import Config from '../config';
+import Facebook from '../services/Facebook';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
 		super({
 			key: 'Game'
 		});
-		this.graphics = null;
 		this.screenWidth = null;
 		this.screenHeight = null;
 		this.player = null;
@@ -21,22 +21,34 @@ export default class Game extends Phaser.Scene {
 		this.isRunning = false;
 	}
 	preload () {
-		this.load.image('background', 'img/background.png');
 		this.load.image('pipe_green', 'img/pipe_green.png');
 		this.load.image('pipe_red', 'img/pipe_red.png');
 		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
 		this.load.image('headline', 'img/headline.png');
 		this.load.image('gameover', 'img/gameover.png');
+		this.load.image('star', 'img/star.png');
+		this.load.spritesheet('restart', 'img/restart_sprites.png', {frameWidth: 250, frameHeight: 80});
+		this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
+		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
-		this.graphics = this.add.graphics({
-			lineStyle: {width: 4, color: 0xff0000},
-			fillStyle: {color: 0xffffff}
-		});
+		this.starGroup = this.add.group();
+
+		for (let i = 0; i < 15; i++)
+		{
+			let star = this.add.image(Math.random() * this.screenWidth, Math.random() * this.screenHeight / 2, 'star').setOrigin(0.5).setScale(0.5 + Math.random() * 0.2).setAlpha(0.5 + Math.random() * 0.5);
+			this.physics.world.enable(star);
+			this.starGroup.add(star);
+		}
+		/*this.starGroup.children.entries.forEach(
+			(sprite) => {
+				sprite.body.setVelocityX(-5);
+			}
+		);*/
 
 		//create 3d camera with animated floor elements
 		this.camera3D = this.cameras3d.add(70).setPosition(0, -55, 200).setPixelScale(2048);
@@ -104,6 +116,30 @@ export default class Game extends Phaser.Scene {
 		this.txtGameOverScoreBest = this.add.text(this.screenWidth / 2 + 10, 300, '0', Config.fonts.gameOverScoreValues);
 		this.txtGameOverScoreBest.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
 		this.txtGameOverScoreBest.setOrigin(0, 0);
+		let buttonRestart = this.add.sprite(this.screenWidth / 2, 400, 'restart', 1).setInteractive().setScale(0.5);
+		buttonRestart.on('pointerover', () => {
+			buttonRestart.setFrame(0);
+		}, this);
+		buttonRestart.on('pointerout', () => {
+			buttonRestart.setFrame(1);
+		}, this);
+		buttonRestart.on('pointerdown', this.showStartMenu, this);
+		let buttonShare = this.add.sprite(this.screenWidth / 2, 450, 'share', 1).setInteractive().setScale(0.5);
+		buttonShare.on('pointerover', () => {
+			buttonShare.setFrame(0);
+		}, this);
+		buttonShare.on('pointerout', () => {
+			buttonShare.setFrame(1);
+		}, this);
+		buttonShare.on('pointerdown', Facebook.share, this);
+		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 500, 'leaderboard', 1).setInteractive().setScale(0.5);
+		buttonLeaderboard.on('pointerover', () => {
+			buttonLeaderboard.setFrame(0);
+		}, this);
+		buttonLeaderboard.on('pointerout', () => {
+			buttonLeaderboard.setFrame(1);
+		}, this);
+		buttonLeaderboard.on('pointerdown', this.showLeaderboard, this);
 		//game over group
 		this.groupGameOver = this.add.group();
 		this.groupGameOver.add(rectOverlay);
@@ -112,6 +148,9 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.add(this.txtGameOverScore);
 		this.groupGameOver.add(this.txtGameOverScoreMetaBest);
 		this.groupGameOver.add(this.txtGameOverScoreBest);
+		this.groupGameOver.add(buttonRestart);
+		this.groupGameOver.add(buttonShare);
+		this.groupGameOver.add(buttonLeaderboard);
 		this.groupGameOver.children.entries.forEach(
 			(sprite) => {
 				sprite.visible = false;
@@ -279,5 +318,8 @@ export default class Game extends Phaser.Scene {
 	}
 	openLimeSoda() {
 		window.location.href = 'https://www.limesoda.com';
+	}
+	showLeaderboard() {
+		this.scene.start('Leaderboard');
 	}
 }

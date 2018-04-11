@@ -1,13 +1,13 @@
 import Config from '../config';
 
 const Facebook = {
-	init: function(appId, callback) {
+	init: function(callback) {
 		window.fbAsyncInit = () => {
 			FB.init({
-				appId: appId,
+				appId: Config.appId,
 				autoLogAppEvents : true,
 				xfbml: true,
-				version: 'v2.5'
+				version: 'v2.12'
 			});
 
 			//FB.Canvas.setAutoGrow();

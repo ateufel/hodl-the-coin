@@ -1,10 +1,9 @@
 'use strict';
 
 const Config = {
-	appId: 'xxx',
-	pageId: 'xxx',
+	appId: '437382463348616',
 	devMode: true,
-	serverPath: 'https://yourdomain.at/subfolder/',
+	serverPath: 'https://games.limesoda.com/hodl-steemit',
 	metatags: {
 		title: 'My App',
 		description: 'My App Description',
@@ -54,6 +53,27 @@ const Config = {
 			fontSize: 48,
 			color: '#fbf201',
 			shadow: '#e79617'
+		},
+		leaderboardHeadline: {
+			fontFamily: 'MunroSmall',
+			fontSize: 48,
+			color: '#fbf201',
+			shadow: '#e79617'
+		},
+		leaderboardUserName: {
+			fontFamily: 'MunroSmall',
+			fontSize: 32,
+			color: '#aa96fb'
+		},
+		leaderboardUserScore: {
+			fontFamily: 'MunroSmall',
+			fontSize: 32,
+			color: '#fbf201'
+		},
+		leaderboardClose: {
+			fontFamily: 'MunroSmall',
+			fontSize: 48,
+			color: '#fbf201'
 		}
 	}
 };
