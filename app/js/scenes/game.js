@@ -2,6 +2,7 @@ import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
 import Config from '../config';
 import Facebook from '../services/Facebook';
+import {fbAddScore} from '../services/Firebase';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
@@ -107,12 +108,12 @@ export default class Game extends Phaser.Scene {
 		this.txtGameOverScore = this.add.text(this.screenWidth / 2 + 10, 250, '0', Config.fonts.gameOverScoreValues);
 		this.txtGameOverScore.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
 		this.txtGameOverScore.setOrigin(0, 0);
-		this.txtGameOverScoreMetaBest = this.add.text(this.screenWidth / 2 - 10, 300, 'BEST', Config.fonts.gameOverScoreMeta);
+		/*this.txtGameOverScoreMetaBest = this.add.text(this.screenWidth / 2 - 10, 300, 'BEST', Config.fonts.gameOverScoreMeta);
 		this.txtGameOverScoreMetaBest.setShadow(0, 4, Config.fonts.gameOverScoreMeta.shadow, 0);
 		this.txtGameOverScoreMetaBest.setOrigin(1, 0);
 		this.txtGameOverScoreBest = this.add.text(this.screenWidth / 2 + 10, 300, '0', Config.fonts.gameOverScoreValues);
 		this.txtGameOverScoreBest.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
-		this.txtGameOverScoreBest.setOrigin(0, 0);
+		this.txtGameOverScoreBest.setOrigin(0, 0);*/
 		let buttonRestart = this.add.sprite(this.screenWidth / 2, 400, 'restart', 1).setInteractive().setScale(0.5);
 		buttonRestart.on('pointerover', () => {
 			buttonRestart.setFrame(0);
@@ -143,8 +144,8 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.add(this.gameover);
 		this.groupGameOver.add(this.txtGameOverScoreMeta);
 		this.groupGameOver.add(this.txtGameOverScore);
-		this.groupGameOver.add(this.txtGameOverScoreMetaBest);
-		this.groupGameOver.add(this.txtGameOverScoreBest);
+		/*this.groupGameOver.add(this.txtGameOverScoreMetaBest);
+		this.groupGameOver.add(this.txtGameOverScoreBest);*/
 		this.groupGameOver.add(buttonRestart);
 		//this.groupGameOver.add(buttonShare);
 		this.groupGameOver.add(buttonLeaderboard);
@@ -297,6 +298,9 @@ export default class Game extends Phaser.Scene {
 		this.txtPoweredBy.setDepth(1);
 
 		let prompt = window.prompt('Congrats, you made it to the Leaderboard!', 'Enter yor Steemit username?');
+		if (prompt.length) {
+			fbAddScore(prompt, this.currentScore);
+		}
 	}
 	startGame() {
 		Facebook.log('startGame');
