@@ -30,6 +30,14 @@ const Facebook = {
 			method: 'share',
 			href: Config.serverPath
 		});
+	},
+	log: (eventName, customData) => {
+		if (customData) {
+			FB.AppEvents.logEvent(eventName, null, customData);
+		} else {
+			FB.AppEvents.logEvent(eventName);
+		}
+
 	}
 };
 

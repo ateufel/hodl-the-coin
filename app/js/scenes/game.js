@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('gameover', 'img/gameover.png');
 		this.load.image('star', 'img/star.png');
 		this.load.spritesheet('restart', 'img/restart_sprites.png', {frameWidth: 250, frameHeight: 80});
-		this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
+		//this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
 		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
 	}
@@ -36,19 +36,16 @@ export default class Game extends Phaser.Scene {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
-		this.starGroup = this.add.group();
-
-		for (let i = 0; i < 15; i++)
-		{
-			let star = this.add.image(Math.random() * this.screenWidth, Math.random() * this.screenHeight / 2, 'star').setOrigin(0.5).setScale(0.5 + Math.random() * 0.2).setAlpha(0.5 + Math.random() * 0.5);
-			this.physics.world.enable(star);
-			this.starGroup.add(star);
-		}
-		/*this.starGroup.children.entries.forEach(
+		this.starGroup = this.add.group({key: 'star', frameQuantity: 15});
+		Phaser.Actions.RandomRectangle(this.starGroup.getChildren(), new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight / 2));
+		Phaser.Actions.SetAlpha(this.starGroup.getChildren(), 0.5, 0.5 / 15);
+		Phaser.Actions.SetScale(this.starGroup.getChildren(), 0.5, 0.5, 0.2 / 15, 0.2 / 15);
+		this.starGroup.children.entries.forEach(
 			(sprite) => {
-				sprite.body.setVelocityX(-5);
+				this.physics.world.enable(sprite);
+				sprite.body.setVelocityX(-10 * sprite.alpha);
 			}
-		);*/
+		);
 
 		//create 3d camera with animated floor elements
 		this.camera3D = this.cameras3d.add(70).setPosition(0, -55, 200).setPixelScale(2048);
@@ -57,8 +54,8 @@ export default class Game extends Phaser.Scene {
 
 		this.player = new Coin({
 			scene: this,
-			x: this.screenWidth * 0.3,
-			y: this.screenHeight * 0.3
+			x: this.screenWidth / 2 + 100,
+			y: 150
 		});
 
 		this.pipes = this.add.group();
@@ -124,15 +121,15 @@ export default class Game extends Phaser.Scene {
 			buttonRestart.setFrame(1);
 		}, this);
 		buttonRestart.on('pointerdown', this.showStartMenu, this);
-		let buttonShare = this.add.sprite(this.screenWidth / 2, 450, 'share', 1).setInteractive().setScale(0.5);
+		/*let buttonShare = this.add.sprite(this.screenWidth / 2, 450, 'share', 1).setInteractive().setScale(0.5);
 		buttonShare.on('pointerover', () => {
 			buttonShare.setFrame(0);
 		}, this);
 		buttonShare.on('pointerout', () => {
 			buttonShare.setFrame(1);
 		}, this);
-		buttonShare.on('pointerdown', Facebook.share, this);
-		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 500, 'leaderboard', 1).setInteractive().setScale(0.5);
+		buttonShare.on('pointerdown', Facebook.share, this);*/
+		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 450, 'leaderboard', 1).setInteractive().setScale(0.5);
 		buttonLeaderboard.on('pointerover', () => {
 			buttonLeaderboard.setFrame(0);
 		}, this);
@@ -149,7 +146,7 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.add(this.txtGameOverScoreMetaBest);
 		this.groupGameOver.add(this.txtGameOverScoreBest);
 		this.groupGameOver.add(buttonRestart);
-		this.groupGameOver.add(buttonShare);
+		//this.groupGameOver.add(buttonShare);
 		this.groupGameOver.add(buttonLeaderboard);
 		this.groupGameOver.children.entries.forEach(
 			(sprite) => {
@@ -173,7 +170,13 @@ export default class Game extends Phaser.Scene {
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
-		//TODO do stuff while not running
+		this.starGroup.children.entries.forEach(
+			(sprite) => {
+				if (sprite.x < -sprite.width) {
+					sprite.x = this.screenWidth;
+				}
+			}
+		);
 
 		if (!this.isRunning) {
 			return;
@@ -247,20 +250,24 @@ export default class Game extends Phaser.Scene {
 		}
 	}
 	showStartMenu() {
-		this.player.angle = 15;
-		this.player.x = this.screenWidth / 2 + 100;
-		this.player.y = 150;
+		this.player.reset();
 		this.player.setDepth(1);
+		//show start menu group
 		this.groupStartMenu.children.entries.forEach(
 			(sprite) => {
 				sprite.visible = true;
 			}
 		);
+		//clear gameover group
 		this.groupGameOver.children.entries.forEach(
 			(sprite) => {
 				sprite.visible = false;
 			}
 		);
+		//clear pipes
+		while (this.pipes.children.entries.length) {
+			this.pipes.getFirstAlive().destroy();
+		}
 	}
 	shutdown() {
 		this.sys.game.events.off('resize', this.resize, this);
@@ -269,7 +276,6 @@ export default class Game extends Phaser.Scene {
 		if (this.player.isDead || !this.isRunning) {
 			return;
 		}
-		//alert('game over');
 		this.player.isDead = true;
 		this.isRunning = false;
 		this.pipes.children.entries.forEach(
@@ -289,10 +295,13 @@ export default class Game extends Phaser.Scene {
 
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
+
+		let prompt = window.prompt('Congrats, you made it to the Leaderboard!', 'Enter yor Steemit username?');
 	}
 	startGame() {
-		//TODO remove menu items with animation and then start game (after a small timeout)
+		Facebook.log('startGame');
 
+		//TODO remove menu items with animation and then start game (after a small timeout)
 		this.tweens.add({
 			targets: this.player,
 			x: this.screenWidth * 0.3,
@@ -302,10 +311,12 @@ export default class Game extends Phaser.Scene {
 			repeat: 0
 		});
 
+		this.currentScore = 0;
+		this.txtScore.setText(this.currentScore);
+		this.txtScore.visible = true;
 		this.player.startGame();
 		this.isRunning = true;
 		this.txtPoweredBy.visible = false;
-		this.txtScore.visible = true;
 
 		this.groupStartMenu.children.entries.forEach(
 			(sprite) => {
@@ -314,12 +325,15 @@ export default class Game extends Phaser.Scene {
 		);
 	}
 	openSteemit() {
+		Facebook.log('openSteemit');
 		window.location.href = 'https://www.steemit.com/@limesoda';
 	}
 	openLimeSoda() {
+		Facebook.log('openLimeSoda');
 		window.location.href = 'https://www.limesoda.com';
 	}
 	showLeaderboard() {
+		Facebook.log('showLeaderboard');
 		this.scene.start('Leaderboard');
 	}
 }

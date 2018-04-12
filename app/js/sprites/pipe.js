@@ -14,7 +14,6 @@ export default class Pipe extends Phaser.GameObjects.Sprite {
 		if (this.x < -this.body.width) {
 			this.setVisible(false);
 			this.setActive(false);
-			this.scene.pipes.remove(this);
 			this.destroy();
 			return;
 		}
