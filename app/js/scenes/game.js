@@ -20,6 +20,7 @@ export default class Game extends Phaser.Scene {
 		this.bgElements = [];
 		this.startX = 0;
 		this.isRunning = false;
+		this.bgSound = null;
 	}
 	preload () {
 		this.load.image('pipe_green', 'img/pipe_green.png');
@@ -33,6 +34,9 @@ export default class Game extends Phaser.Scene {
 		//this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
 		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
+		/*this.load.audio('theme', [
+			'audio/music_main.mp3'
+		]);*/
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
@@ -173,6 +177,10 @@ export default class Game extends Phaser.Scene {
 
 		//this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
+
+		/*if (!this.bgSound) {
+			this.bgSound = this.sound.add('theme').play();
+		}*/
 	}
 	update(time, delta) {
 		this.bgTile.tilePositionX += delta * 0.03;

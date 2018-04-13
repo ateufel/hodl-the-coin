@@ -2,10 +2,19 @@ const path = require('path'),
 	webpack = require('webpack'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
 	OfflinePlugin = require('offline-plugin'),
+	fs = require('fs'),
 	Config = require('./app/js/config');
 
 const HOST = process.env.HOST || '0.0.0.0',
 	PORT = process.env.PORT || 8080;
+
+let cachingArray = [];
+fs.readdirSync(path.join(__dirname, 'app/img')).forEach(file => {
+	cachingArray.push('./img/' + file);
+});
+fs.readdirSync(path.join(__dirname, 'app/audio')).forEach(file => {
+	cachingArray.push('./audio/' + file);
+});
 
 module.exports = {
 	entry: './app/js/main.js',
@@ -119,6 +128,8 @@ module.exports = {
 				}
 			}*/
 		}),
-		new OfflinePlugin()
+		new OfflinePlugin({
+			externals: cachingArray
+		})
 	]
 };
