@@ -8,7 +8,6 @@
     <meta<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>><% } %>
     <% } %>
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <% if (htmlWebpackPlugin.files.favicon) { %><link href="<%= htmlWebpackPlugin.files.favicon %>" rel="shortcut icon"><% } %>
     <% if (htmlWebpackPlugin.options.mobile) { %><meta content="width=device-width, initial-scale=1" name="viewport"><% } %>
     <% for (item of htmlWebpackPlugin.options.links) { %>
     <% if (typeof item === 'string' || item instanceof String) { item = { href: item, rel: 'stylesheet' } } %><link<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>>
@@ -19,6 +18,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+	<link href="favicon.ico" rel="shortcut icon">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
