@@ -101,6 +101,7 @@ module.exports = {
 				{property: 'og:title', content: Config.metatags.title},
 				{property: 'og:description', content: Config.metatags.description},
 				{property: 'og:image', content: Config.metatags.ogImage},
+				{property: 'og:image:secure_url', content: Config.metatags.ogImage},
 				{property: 'og:url', content: Config.metatags.ogURL},
 				{property: 'og:image:width', content: Config.metatags.ogImageWidth},
 				{property: 'og:image:height', content: Config.metatags.ogImageHeight}
