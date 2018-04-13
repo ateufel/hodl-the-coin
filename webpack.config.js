@@ -1,7 +1,7 @@
 const path = require('path'),
 	webpack = require('webpack'),
 	HtmlWebpackPlugin = require('html-webpack-plugin'),
-	//OfflinePlugin = require('offline-plugin'),
+	OfflinePlugin = require('offline-plugin'),
 	Config = require('./app/js/config');
 
 const HOST = process.env.HOST || '0.0.0.0',
@@ -119,8 +119,6 @@ module.exports = {
 				}
 			}*/
 		}),
-		/*new OfflinePlugin({
-			externals: ['./js/vendor/phaser-arcade-physics.js']
-		})*/
+		new OfflinePlugin()
 	]
 };

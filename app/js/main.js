@@ -4,7 +4,9 @@ import Leaderboard from './scenes/leaderboard';
 import Game from './scenes/game';
 import Facebook from './services/Facebook';
 import styles from '../css/main.css';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 
+OfflinePluginRuntime.install();
 Facebook.init();
 
 const config = {
