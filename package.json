@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-phaser-cordova-es6",
+  "name": "hodl-the-coin",
   "version": "1.0.0",
-  "description": "Boilerplate Project for Phaser Games with ES6 - Cordova power included",
+  "description": "Hold the Coin",
   "main": "main.js",
   "scripts": {
     "serve": "npm run clean && npm run copy && webpack-dev-server --content-base build/ --history-api-fallback --inline --mode development",
@@ -14,15 +14,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint -c .eslintrc -f checkstyle app > eslint.xml",
     "lint:local": "eslint app",
-    "stats": "webpack -p --config ./webpack.prod.config.js --profile --json > stats.json"
+    "stats": "webpack -p --config ./webpack.prod.config.js --profile --json > stats.json",
+    "docker:start": "cd docker && docker-compose up -d",
+    "docker:stop": "cd docker && docker-compose stop",
+    "docker:rebuild": "cd docker && docker-compose stop && docker-compose up -d --build"
   },
   "author": "Andreas Teufel",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^7.0.0-beta.3",
+    "babel-preset-stage-2": "^6.24.1",
     "browser-sync": "^2.23.6",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
@@ -43,6 +47,6 @@
     "es6-promise": "^4.2.4",
     "firebase": "^4.12.1",
     "mobile-detect": "^1.4.1",
-    "phaser": "^3.3.0"
+    "phaser": "~3.3.0"
   }
 }

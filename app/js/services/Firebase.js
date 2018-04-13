@@ -8,31 +8,24 @@ firebase.initializeApp({
 });
 const db = firebase.firestore();
 
-export const fbGetUsers = () => {
-	let querySnapshot = db.collection('users-steem').get().limit(1);
-
-	return querySnapshot.docs.map((doc) => {
+export const fbGetUsers = async () => {
+	let querySnapshot = await db.collection('users-steem').get();
+	let userArray = querySnapshot.docs.map((doc) => {
 		return {
 			...doc.data(),
 			id: doc.id
 		};
 	});
-	/*db.collection('users-steem').get().limit(1).then((querySnapshot) => {
-		let userArray = [];
-		querySnapshot.forEach((doc) => {
-			//console.log(`${doc.id} => ${doc.data()}`);
-			userArray.push(doc.data());
-		});
-		userArray.sort((a, b) => {
-			return b.score - a.score;
-		});
-		this.showUsers(userArray);
-	});*/
+	userArray.sort((a, b) => {
+		return b.score - a.score;
+	});
+	return userArray.slice(0, 10);
 };
 
 export const fbAddScore = async (username, score) => {
-	db.collection('users-steem').add({
+	await db.collection('users-steem').add({
 		username: username,
 		score: score
 	});
+	return true;
 };

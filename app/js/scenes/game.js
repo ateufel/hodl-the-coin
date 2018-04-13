@@ -2,7 +2,7 @@ import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
 import Config from '../config';
 import Facebook from '../services/Facebook';
-import {fbAddScore} from '../services/Firebase';
+import {fbAddScore, fbGetUsers} from '../services/Firebase';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
@@ -297,10 +297,14 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
 
-		let prompt = window.prompt('Congrats, you made it to the Leaderboard!', 'Enter yor Steemit username?');
-		if (prompt.length) {
-			fbAddScore(prompt, this.currentScore);
-		}
+		fbGetUsers().then((response) => {
+			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
+				let prompt = window.prompt('Congrats, you made it to the Leaderboard!', 'Enter your Steemit username');
+				if (prompt && prompt.length) {
+					fbAddScore(prompt, this.currentScore);
+				}
+			}
+		});
 	}
 	startGame() {
 		Facebook.log('startGame');

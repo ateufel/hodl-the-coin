@@ -9,11 +9,6 @@ export default class Leaderboard extends Phaser.Scene {
 		});
 		this.screenWidth = null;
 		this.screenHeight = null;
-
-		fbGetUsers().then((response) => {
-			console.log(response);
-			//this.showUsers(response);
-		});
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
@@ -31,6 +26,10 @@ export default class Leaderboard extends Phaser.Scene {
 		this.input.on('gameobjectup', (pointer, gameObject) => {
 			gameObject.emit('clicked', gameObject);
 		}, this);
+
+		fbGetUsers().then((response) => {
+			this.showUsers(response);
+		});
 	}
 	showUsers(userArray) {
 		this.screenWidth = this.sys.canvas.width;

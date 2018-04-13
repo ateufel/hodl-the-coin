@@ -3,12 +3,12 @@
 const Config = {
 	appId: '437382463348616',
 	devMode: true,
-	serverPath: 'https://games.limesoda.com/hodl-steemit',
+	serverPath: 'https://games.limesoda.com/hodl-steem',
 	metatags: {
-		title: 'My App',
-		description: 'My App Description',
-		ogURL: 'https://limesoda.lsapps.at/limeapp/',
-		ogImage: 'https://limesoda.lsapps.at/limeapp/img/share.jpg',
+		title: 'Hodl the Coin by LimeSoda',
+		description: 'Hodl the Coin by LimeSoda',
+		ogURL: 'https://games.limesoda.com/hodl-steem/',
+		ogImage: 'https://games.limesoda.com/hodl-steem/img/share.jpg',
 		ogImageWidth: 1200,
 		ogImageHeight: 630
 	},
