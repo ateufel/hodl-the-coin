@@ -28,6 +28,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image('headline', 'img/headline.png');
 		this.load.image('gameover', 'img/gameover.png');
 		this.load.image('star', 'img/star.png');
+		this.load.image('bg_sprite', 'img/bg_tileable.gif');
 		this.load.spritesheet('restart', 'img/restart_sprites.png', {frameWidth: 250, frameHeight: 80});
 		//this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
 		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
@@ -36,6 +37,9 @@ export default class Game extends Phaser.Scene {
 	create() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
+
+		this.bgTile = this.add.tileSprite(0, 0, this.screenWidth, this.screenHeight, 'bg_sprite').setOrigin(0, 0).setAlpha(0.5);
+		//this.bgTile.setScale(0.5);
 
 		this.starGroup = this.add.group({key: 'star', frameQuantity: 15});
 		Phaser.Actions.RandomRectangle(this.starGroup.getChildren(), new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight / 2));
@@ -114,7 +118,7 @@ export default class Game extends Phaser.Scene {
 		this.txtGameOverScoreBest = this.add.text(this.screenWidth / 2 + 10, 300, '0', Config.fonts.gameOverScoreValues);
 		this.txtGameOverScoreBest.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
 		this.txtGameOverScoreBest.setOrigin(0, 0);*/
-		let buttonRestart = this.add.sprite(this.screenWidth / 2, 400, 'restart', 1).setInteractive().setScale(0.5);
+		let buttonRestart = this.add.sprite(this.screenWidth / 2, 350, 'restart', 1).setInteractive().setScale(0.5);
 		buttonRestart.on('pointerover', () => {
 			buttonRestart.setFrame(0);
 		}, this);
@@ -130,7 +134,7 @@ export default class Game extends Phaser.Scene {
 			buttonShare.setFrame(1);
 		}, this);
 		buttonShare.on('pointerdown', Facebook.share, this);*/
-		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 450, 'leaderboard', 1).setInteractive().setScale(0.5);
+		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 400, 'leaderboard', 1).setInteractive().setScale(0.5);
 		buttonLeaderboard.on('pointerover', () => {
 			buttonLeaderboard.setFrame(0);
 		}, this);
@@ -171,6 +175,7 @@ export default class Game extends Phaser.Scene {
 		this.events.once('shutdown', this.shutdown, this);
 	}
 	update(time, delta) {
+		this.bgTile.tilePositionX += delta * 0.03;
 		this.starGroup.children.entries.forEach(
 			(sprite) => {
 				if (sprite.x < -sprite.width) {
@@ -299,9 +304,16 @@ export default class Game extends Phaser.Scene {
 
 		fbGetUsers().then((response) => {
 			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
-				let prompt = window.prompt('Congrats, you made it to the Leaderboard!', 'Enter your Steemit username');
-				if (prompt && prompt.length) {
-					fbAddScore(prompt, this.currentScore);
+				while(true) {
+					let prompt = window.prompt('Congrats, you made it to the Leaderboard! Please enter your Steemit name', '');
+					if (prompt === null) {
+						//aborted
+						break;
+					}
+					if (prompt && prompt.length) {
+						fbAddScore(prompt, this.currentScore);
+						break;
+					}
 				}
 			}
 		});

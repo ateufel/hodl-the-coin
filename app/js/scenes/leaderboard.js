@@ -40,7 +40,7 @@ export default class Leaderboard extends Phaser.Scene {
 		});
 		const gap = (this.screenHeight - 170) / 10;
 		for (let i = 0; i < (userArray.length - 1); i++) {
-			lineGraphics.lineBetween(30, 170 + (gap * i), this.screenWidth - 30, 170 + (gap * i));
+			lineGraphics.lineBetween(30, 143 + (gap / 2) + (gap * i), this.screenWidth - 30, 143 + (gap / 2) + (gap * i));
 		}
 		for (let i = 0; i < userArray.length; i++) {
 			this.add.text(20, 143 + (gap * i), userArray[i].username, Config.fonts.leaderboardUserName).setOrigin(0, 0.5);
