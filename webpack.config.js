@@ -97,13 +97,13 @@ module.exports = {
 			appMountId: 'canvas',
 			meta: [
 				{name: 'description', content: Config.metatags.description},
-				{name: 'og:type', content: 'website'},
-				{name: 'og:title', content: Config.metatags.title},
-				{name: 'og:description', content: Config.metatags.description},
-				{name: 'og:image', content: Config.metatags.ogImage},
-				{name: 'og:url', content: Config.metatags.ogURL},
-				{name: 'og:image:width', content: Config.metatags.ogImageWidth},
-				{name: 'og:image:height', content: Config.metatags.ogImageHeight}
+				{property: 'og:type', content: 'website'},
+				{property: 'og:title', content: Config.metatags.title},
+				{property: 'og:description', content: Config.metatags.description},
+				{property: 'og:image', content: Config.metatags.ogImage},
+				{property: 'og:url', content: Config.metatags.ogURL},
+				{property: 'og:image:width', content: Config.metatags.ogImageWidth},
+				{property: 'og:image:height', content: Config.metatags.ogImageHeight}
 			],
 			minify: false,
 			mobile: true,
