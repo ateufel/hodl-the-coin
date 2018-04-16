@@ -30,6 +30,7 @@ export default class Game extends Phaser.Scene {
 		this.screenHeight = this.sys.canvas.height;
 
 		this.bgTile = this.add.tileSprite(0, 0, this.screenWidth, this.screenHeight, 'bg_sprite').setOrigin(0, 0).setAlpha(0.5);
+		this.bgTile.setDepth(-1000);
 		//this.bgTile.setScale(0.5);
 
 		this.starGroup = this.add.group({key: 'star', frameQuantity: 15});
