@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Boot from './scenes/boot';
 import Preloader from './scenes/preloader';
 import Leaderboard from './scenes/leaderboard';
 import Game from './scenes/game';
@@ -23,6 +24,7 @@ const config = {
 		}
 	},
 	scene: [
+		Boot,
 		Preloader,
 		Game,
 		Leaderboard

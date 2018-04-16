@@ -23,20 +23,7 @@ export default class Game extends Phaser.Scene {
 		this.bgSound = null;
 	}
 	preload () {
-		this.load.image('pipe_green', 'img/pipe_green.png');
-		this.load.image('pipe_red', 'img/pipe_red.png');
-		this.load.image('bg_ellipse', 'img/ellipse_glow.png');
-		this.load.image('headline', 'img/headline.png');
-		this.load.image('gameover', 'img/gameover.png');
-		this.load.image('star', 'img/star.png');
-		this.load.image('bg_sprite', 'img/bg_tileable.gif');
-		this.load.spritesheet('restart', 'img/restart_sprites.png', {frameWidth: 250, frameHeight: 80});
-		//this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
-		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
-		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
-		/*this.load.audio('theme', [
-			'audio/music_main.mp3'
-		]);*/
+
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;

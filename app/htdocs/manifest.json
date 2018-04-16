@@ -1,12 +1,32 @@
 {
 	"short_name": "HodlTheCoin",
 	"name": "Hodl The Coin",
-	"start_url": "index.html",
+	"description": "Hodl The Coin by LimeSoda",
+	"start_url": "https://games.limesoda.com/hodl-steem/",
 	"display": "fullscreen",
 	"orientation": "portrait",
 	"background_color": "#000",
 	"theme_color": "#000",
-	"icons": {
-		"192": "favicon.png"
-	}
+	"icons": [
+		{
+			"src": "img/favicon_96.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		},
+		{
+			"src": "img/favicon_144.png",
+			"sizes": "144x144",
+			"type": "image/png"
+		},
+		{
+			"src": "img/favicon_192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "img/favicon_512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
 }

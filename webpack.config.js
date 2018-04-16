@@ -104,7 +104,8 @@ module.exports = {
 				{property: 'og:image:secure_url', content: Config.metatags.ogImage},
 				{property: 'og:url', content: Config.metatags.ogURL},
 				{property: 'og:image:width', content: Config.metatags.ogImageWidth},
-				{property: 'og:image:height', content: Config.metatags.ogImageHeight}
+				{property: 'og:image:height', content: Config.metatags.ogImageHeight},
+				{property: 'fb:app_id', content: Config.appId}
 			],
 			minify: false,
 			mobile: true,
