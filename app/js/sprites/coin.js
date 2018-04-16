@@ -46,6 +46,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 	startGame() {
 		this.body.setGravity(0, 2500);
 
+		this.scene.input.off('pointerdown');
 		this.scene.input.on('pointerdown', () => {
 			if (this.isDead || !this.scene.isRunning) {
 				return;
@@ -53,6 +54,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 			this.body.setVelocity(0, -600);
 			//increase frameRate for a tick
 			this.config.scene.anims.get('coinflap').frameRate = 30;
+			this.config.scene.addLine();
 			this.play('coinflap');
 		});
 	}

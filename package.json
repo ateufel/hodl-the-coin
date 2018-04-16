@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "serve": "npm run clean && npm run copy && webpack-dev-server --content-base build/ --history-api-fallback --inline --mode development",
+    "serve:noclean": "webpack-dev-server --content-base build/ --history-api-fallback --inline --mode development",
     "build:js:dev": "webpack --config ./webpack.config.js --mode development",
     "build:js:prod": "webpack --config ./webpack.config.js --mode production",
     "copy": "node scripts/copy",

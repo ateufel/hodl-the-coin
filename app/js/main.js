@@ -36,6 +36,7 @@ const config = {
 const game =  new Phaser.Game(config);
 
 window.onresize = () => {
-	game.renderer.resize(window.innerWidth, window.innerHeight);
-	game.events.emit('resize');
+	//game.renderer.resize(window.innerWidth, window.innerHeight);
+	//game.events.emit('resize');
+	location.reload();
 };

@@ -21,6 +21,12 @@ export default class Game extends Phaser.Scene {
 		this.startX = 0;
 		this.isRunning = false;
 		this.bgSound = null;
+		this.lines = [];
+		this.lastLineEndpoint = {
+			x: 0,
+			y: 0
+		};
+		this.lineOffset = 0;
 	}
 	preload () {
 
@@ -48,6 +54,13 @@ export default class Game extends Phaser.Scene {
 		this.camera3D = this.cameras3d.add(70).setPosition(0, -55, 200).setPixelScale(2048);
 		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
+
+		this.graphics = this.add.graphics({lineStyle: {width: 4, color: 0xffffff, alpha: 0.9}});
+		this.lines = [];
+		this.lastLineEndpoint = {
+			x: 0,
+			y: this.screenHeight / 2
+		};
 
 		this.player = new Coin({
 			scene: this,
@@ -193,6 +206,14 @@ export default class Game extends Phaser.Scene {
 			}
 		}
 
+		//TODO move this.lines to the left
+		this.graphics.clear();
+		for(let i = 0; i < this.lines.length; i++) {
+			Phaser.Geom.Line.Offset(this.lines[i], -delta * 0.1, 0);
+			this.graphics.strokeLineShape(this.lines[i]);
+			//this.lastLineEndpoint.x -= delta * 0.1;
+		}
+
 		//update sub-components
 		this.pipes.children.entries.forEach(
 			(sprite) => {
@@ -222,6 +243,23 @@ export default class Game extends Phaser.Scene {
 		this.player.x = this.screenWidth * 0.2;
 		this.player.y = this.screenHeight * 0.5;
 	}*/
+	addLine() {
+		const line = new Phaser.Geom.Line(this.lastLineEndpoint.x, this.lastLineEndpoint.y, this.player.x, this.player.y);
+		this.lines.push(line);
+		this.graphics.clear();
+		for(let i = 0; i < this.lines.length; i++) {
+			if(this.lines[i].right < 0) {
+				this.lines.splice(i--, 1);
+			}
+			else {
+				this.graphics.strokeLineShape(this.lines[i]);
+			}
+		}
+		this.lastLineEndpoint = {
+			x: this.player.x,
+			y: this.player.y
+		};
+	}
 	addPipes() {
 		if (!this.isRunning) {
 			return;
@@ -278,6 +316,9 @@ export default class Game extends Phaser.Scene {
 		if (this.player.isDead || !this.isRunning) {
 			return;
 		}
+		this.screenWidth = this.sys.canvas.width;
+		this.screenHeight = this.sys.canvas.height;
+
 		this.player.isDead = true;
 		this.isRunning = false;
 		this.pipes.children.entries.forEach(
@@ -294,6 +335,13 @@ export default class Game extends Phaser.Scene {
 		this.txtPoweredBy.visible = true;
 		this.txtScore.visible = false;
 		this.player.visible = false;
+
+		this.graphics.clear();
+		this.lines = [];
+		this.lastLineEndpoint = {
+			x: 0,
+			y: this.screenHeight / 2
+		};
 
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
