@@ -4,6 +4,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		config.scene.physics.world.enable(this);
 		config.scene.add.existing(this);
 		this.body.setCollideWorldBounds(true);
+		this.body.setBounce(0, 0.7);
 		this.body.setVelocity(0, 0);
 		//this.body.setGravity(0, 2500);
 		this.body.setSize(90, 90, true);
