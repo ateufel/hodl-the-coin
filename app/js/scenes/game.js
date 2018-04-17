@@ -2,7 +2,6 @@ import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
 import Config from '../config';
 import Facebook from '../services/Facebook';
-import {fbAddScore, fbGetUsers} from '../services/Firebase';
 
 export default class Game extends Phaser.Scene {
 	constructor () {
