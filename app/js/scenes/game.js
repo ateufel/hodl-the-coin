@@ -189,6 +189,11 @@ export default class Game extends Phaser.Scene {
 		this.graphics.clear();
 		for(let i = 0; i < this.lines.length; i++) {
 			Phaser.Geom.Line.Offset(this.lines[i], -delta * 0.25, 0);
+			if (this.lines[i].y1 > this.lines[i].y2) {
+				this.graphics.lineStyle(4, 0x49ff8d);
+			} else {
+				this.graphics.lineStyle(4, 0xff4a7c);
+			}
 			this.graphics.strokeLineShape(this.lines[i]);
 		}
 
@@ -221,6 +226,11 @@ export default class Game extends Phaser.Scene {
 				this.lines.splice(i--, 1);
 			}
 			else {
+				if (this.lines[i].y1 >this.lines[i].y2) {
+					this.graphics.lineStyle(4, 0x49ff8d);
+				} else {
+					this.graphics.lineStyle(4, 0xff4a7c);
+				}
 				this.graphics.strokeLineShape(this.lines[i]);
 			}
 		}
