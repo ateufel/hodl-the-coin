@@ -4,7 +4,8 @@ export default class Pipe extends Phaser.GameObjects.Sprite {
 		config.scene.physics.world.enable(this);
 		config.scene.add.existing(this);
 		this.body.setVelocity(-250, 0);
-		this.setOrigin(0, 0);
+		this.body.setOffset(0.5, this.height / 2);
+		this.setOrigin(0.5, 0);
 		this.setScale(6);
 		this.type = config.type;
 		this.isCounted = false;
@@ -31,8 +32,4 @@ export default class Pipe extends Phaser.GameObjects.Sprite {
 	stop = () => {
 		this.body.setVelocity(0, 0);
 	};
-	/*getPipeHeight() {
-		var ground = this.game.cache.getItem(BOTTOM_KEY, Phaser.Cache.IMAGE);
-		return ground.data.height;
-	}*/
 }
