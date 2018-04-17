@@ -12,7 +12,6 @@ export default class Game extends Phaser.Scene {
 		this.screenWidth = null;
 		this.screenHeight = null;
 		this.player = null;
-		this.background = null;
 		this.pipes = [];
 		this.txtScore = null;
 		this.currentScore = 0;
@@ -22,22 +21,12 @@ export default class Game extends Phaser.Scene {
 		this.isRunning = false;
 		this.bgSound = null;
 		this.lines = [];
-		this.lastLineEndpoint = {
-			x: 0,
-			y: 0
-		};
-		this.lineOffset = 0;
-	}
-	preload () {
-
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
-		this.bgTile = this.add.tileSprite(0, 0, this.screenWidth, this.screenHeight, 'bg_sprite').setOrigin(0, 0).setAlpha(0.5);
-		this.bgTile.setDepth(-1000);
-		//this.bgTile.setScale(0.5);
+		this.bgTile = this.add.tileSprite(0, 0, this.screenWidth, this.screenHeight, 'bg_sprite').setOrigin(0, 0).setAlpha(0.5).setDepth(-1000);
 
 		this.starGroup = this.add.group({key: 'star', frameQuantity: 15});
 		Phaser.Actions.RandomRectangle(this.starGroup.getChildren(), new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight / 2));
@@ -55,12 +44,8 @@ export default class Game extends Phaser.Scene {
 		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
 
-		this.graphics = this.add.graphics({lineStyle: {width: 4, color: 0xffffff, alpha: 0.9}});
-		this.lines = [];
-		this.lastLineEndpoint = {
-			x: 0,
-			y: this.screenHeight / 2
-		};
+		//for the lines
+		this.graphics = this.add.graphics({lineStyle: {width: 4, color: 0xffffff, alpha: 1}});
 
 		this.player = new Coin({
 			scene: this,
@@ -206,12 +191,11 @@ export default class Game extends Phaser.Scene {
 			}
 		}
 
-		//TODO move this.lines to the left
+		//move this.lines to the left
 		this.graphics.clear();
 		for(let i = 0; i < this.lines.length; i++) {
-			Phaser.Geom.Line.Offset(this.lines[i], -delta * 0.1, 0);
+			Phaser.Geom.Line.Offset(this.lines[i], -delta * 0.25, 0);
 			this.graphics.strokeLineShape(this.lines[i]);
-			//this.lastLineEndpoint.x -= delta * 0.1;
 		}
 
 		//update sub-components
@@ -221,30 +205,21 @@ export default class Game extends Phaser.Scene {
 			}
 		);
 		this.player.update();
-
-		//TODO this does not work, use world collide event?
-		/*if(this.player.y > this.cameras.main.height) {
-			this.gameOver();
-		}*/
 	}
-	/*resize() {
+	addLine() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
-		/!*if (!this.background) {
-			this.background = this.add.image(0, 0, 'background').setOrigin(0, 0);
-			this.background.displayWidth = this.screenWidth;
-			this.background.displayHeight = this.screenHeight * 0.66;
+		let line;
+		if (this.lines.length) {
+			line = new Phaser.Geom.Line(this.lines[this.lines.length - 1].x2, this.lines[this.lines.length - 1].y2, this.player.x, this.player.y);
 		} else {
-			//TODO set background size
-			//this.background
-		}*!/
-
-		this.player.x = this.screenWidth * 0.2;
-		this.player.y = this.screenHeight * 0.5;
-	}*/
-	addLine() {
-		const line = new Phaser.Geom.Line(this.lastLineEndpoint.x, this.lastLineEndpoint.y, this.player.x, this.player.y);
+			if (Math.ceil(this.player.x) <= Math.ceil(this.screenWidth * 0.3)) {
+				line = new Phaser.Geom.Line(0, this.screenHeight / 2, this.player.x, this.player.y);
+			} else {
+				return;
+			}
+		}
 		this.lines.push(line);
 		this.graphics.clear();
 		for(let i = 0; i < this.lines.length; i++) {
@@ -255,10 +230,6 @@ export default class Game extends Phaser.Scene {
 				this.graphics.strokeLineShape(this.lines[i]);
 			}
 		}
-		this.lastLineEndpoint = {
-			x: this.player.x,
-			y: this.player.y
-		};
 	}
 	addPipes() {
 		if (!this.isRunning) {
@@ -326,7 +297,7 @@ export default class Game extends Phaser.Scene {
 				sprite.stop();
 			}
 		);
-		this.txtGameOverScore.setText(this.currentScore);
+		this.txtGameOverScore.setText(this.currentScore + ' days');
 		this.groupGameOver.children.entries.forEach(
 			(sprite) => {
 				sprite.visible = true;
@@ -338,10 +309,6 @@ export default class Game extends Phaser.Scene {
 
 		this.graphics.clear();
 		this.lines = [];
-		this.lastLineEndpoint = {
-			x: 0,
-			y: this.screenHeight / 2
-		};
 
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);

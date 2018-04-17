@@ -16,6 +16,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 			x: config.x,
 			y: config.y
 		};
+		this.lastVelocity = 0;
 		this.config = config;
 
 		if (!this.config.scene.anims.get('coinflap')) {
@@ -30,7 +31,11 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 		this.play('coinflap');
 	}
 	update() {
-
+		if (this.lastVelocity < 0 && this.body.velocity.y > 0) {
+			//max point detected
+			this.config.scene.addLine();
+		}
+		this.lastVelocity = this.body.velocity.y;
 	}
 	getHeight() {
 		return this.body.height;

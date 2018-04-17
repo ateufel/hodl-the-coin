@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Config from '../config';
 import {fbGetUsers} from '../services/Firebase';
+import Facebook from "../services/Facebook";
 
 export default class Leaderboard extends Phaser.Scene {
 	constructor () {
