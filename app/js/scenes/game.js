@@ -158,9 +158,9 @@ export default class Game extends Phaser.Scene {
 		//this.sys.game.events.on('resize', this.resize, this);
 		this.events.once('shutdown', this.shutdown, this);
 
-		/*if (!this.bgSound) {
-			this.bgSound = this.sound.add('theme').play();
-		}*/
+		if (!this.bgSound) {
+			this.bgSound = this.sound.add('theme', {loop: true}).play();
+		}
 	}
 	update(time, delta) {
 		this.bgTile.tilePositionX += delta * 0.03;

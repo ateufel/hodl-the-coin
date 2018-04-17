@@ -25,7 +25,8 @@
 
 	"globals": {
 		"Phaser": false,
-		"FB": false
+		"FB": false,
+		"COIN": false
 	},
 
 	"rules": {

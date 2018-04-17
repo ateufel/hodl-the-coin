@@ -61,6 +61,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 			this.config.scene.anims.get('coinflap').frameRate = 30;
 			this.config.scene.addLine();
 			this.play('coinflap');
+			this.config.scene.sound.play('beep');
 		});
 	}
 }

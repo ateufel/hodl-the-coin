@@ -5,20 +5,26 @@
   "main": "main.js",
   "scripts": {
     "serve": "npm run clean && npm run copy && webpack-dev-server --content-base build/ --history-api-fallback --inline --mode development",
+    "serve:ardor": "npm run clean:ardor && npm run copy:ardor && webpack-dev-server --content-base build-ardor/ --history-api-fallback --inline --mode development --env.COIN=ARDOR",
     "serve:noclean": "webpack-dev-server --content-base build/ --history-api-fallback --inline --mode development",
     "build:js:dev": "webpack --config ./webpack.config.js --mode development",
     "build:js:prod": "webpack --config ./webpack.config.js --mode production",
+    "build:js:prod:ardor": "webpack --config ./webpack.config.js --mode production --env.COIN=ardor",
     "copy": "node scripts/copy",
+    "copy:ardor": "node scripts/copy-ardor",
     "clean": "rm -rf build",
+    "clean:ardor": "rm -rf build-ardor",
     "build": "npm run clean && npm run build:js:dev && npm run copy",
     "build:prod": "npm run clean && npm run build:js:prod && npm run copy",
+    "build:prod:ardor": "npm run clean:ardor && npm run build:js:prod:ardor && npm run copy:ardor",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint -c .eslintrc -f checkstyle app > eslint.xml",
     "lint:local": "eslint app",
     "stats": "webpack -p --config ./webpack.prod.config.js --profile --json > stats.json",
     "docker:start": "cd docker && docker-compose up -d",
     "docker:stop": "cd docker && docker-compose stop",
-    "docker:rebuild": "cd docker && docker-compose stop && docker-compose up -d --build"
+    "docker:rebuild": "cd docker && docker-compose stop && docker-compose up -d --build",
+    "build:all": "npm run build:prod && npm run build:prod:ardor"
   },
   "author": "Andreas Teufel",
   "devDependencies": {

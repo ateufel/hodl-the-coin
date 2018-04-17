@@ -16,125 +16,130 @@ fs.readdirSync(path.join(__dirname, 'app/audio')).forEach(file => {
 	cachingArray.push('./audio/' + file);
 });
 
-module.exports = {
-	entry: './app/js/main.js',
-	output: {
-		path: path.join(__dirname, 'build'),
-		filename: 'js/main.js'
-	},
-	//devtool: '#cheap-module-source-map',
-	devServer: {
-		historyApiFallback: true,
-		hot: false,
-		stats: 'errors-only',
-		host: HOST,
-		port: PORT,
-		https: true,
-		inline: true,
-		contentBase: path.join(__dirname, 'build'),
-		/*proxy: {
-			'/!*': 'http://limesoda.lsapps.at/limeapp'
-		}*/
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /(node_modules|build)/,
-				loader: 'babel-loader',
-				/*query: {
-				 // https://github.com/babel/babel-loader#options
-				 cacheDirectory: true
-				 },*/
-				options: {
-					//presets and plugins in .babelrc
-				}
-			},
-			{
-				test: /\.css$/,
-				use: [
-					{
-						loader: 'style-loader',
-						options: {
-							//importLoaders: 1,
-							//minimize: true
-						}
-					},
-					{
-						loader: 'css-loader',
-						options: {
-							modules: false
-							//importLoaders: 1,
-							//minimize: true
-						}
-					},
-					{
-						loader: 'postcss-loader',
-						options: {
-							plugins: function () {
-								return [
-									require('postcss-cssnext')
-								];
-							}
-						}
-					},
-				]
-			},
-			{
-				test: [/\.vert$/, /\.frag$/],
-				use: 'raw-loader'
-			}
-		]
-	},
-	plugins: [
-		new webpack.DefinePlugin({
-			'CANVAS_RENDERER': JSON.stringify(true),
-			'WEBGL_RENDERER': JSON.stringify(true)
-		}),
-		new HtmlWebpackPlugin({
-			inject: false,
-			template: 'htmlWebpackTemplate.ejs',
-			appMountId: 'canvas',
-			meta: [
-				{name: 'description', content: Config.metatags.description},
-				{property: 'og:type', content: 'website'},
-				{property: 'og:title', content: Config.metatags.title},
-				{property: 'og:description', content: Config.metatags.description},
-				{property: 'og:image', content: Config.metatags.ogImage},
-				{property: 'og:image:secure_url', content: Config.metatags.ogImage},
-				{property: 'og:url', content: Config.metatags.ogURL},
-				{property: 'og:image:width', content: Config.metatags.ogImageWidth},
-				{property: 'og:image:height', content: Config.metatags.ogImageHeight},
-				{property: 'fb:app_id', content: Config.appId}
-			],
-			minify: false,
-			mobile: true,
-			/*links: [
-				'https://fonts.googleapis.com/css?family=Roboto',
+module.exports = env => {
+	const buildFolder = (env && env.COIN) ? `build-${env.COIN}` : 'build';
+
+	return {
+		entry: './app/js/main.js',
+		output: {
+			path: path.join(__dirname, buildFolder),
+			filename: 'js/main.js'
+		},
+		//devtool: '#cheap-module-source-map',
+		devServer: {
+			historyApiFallback: true,
+			hot: false,
+			stats: 'errors-only',
+			host: HOST,
+			port: PORT,
+			https: true,
+			inline: true,
+			contentBase: path.join(__dirname, buildFolder),
+			/*proxy: {
+				'/!*': 'http://limesoda.lsapps.at/limeapp'
+			}*/
+		},
+		module: {
+			rules: [
 				{
-					href: '/apple-touch-icon.png',
-					rel: 'apple-touch-icon',
-					sizes: '180x180'
+					test: /\.js$/,
+					exclude: /(node_modules|build*)/,
+					loader: 'babel-loader',
+					/*query: {
+					 // https://github.com/babel/babel-loader#options
+					 cacheDirectory: true
+					 },*/
+					options: {
+						//presets and plugins in .babelrc
+					}
 				},
 				{
-					href: '/favicon-32x32.png',
-					rel: 'icon',
-					sizes: '32x32',
-					type: 'image/png'
+					test: /\.css$/,
+					use: [
+						{
+							loader: 'style-loader',
+							options: {
+								//importLoaders: 1,
+								//minimize: true
+							}
+						},
+						{
+							loader: 'css-loader',
+							options: {
+								modules: false
+								//importLoaders: 1,
+								//minimize: true
+							}
+						},
+						{
+							loader: 'postcss-loader',
+							options: {
+								plugins: function () {
+									return [
+										require('postcss-cssnext')
+									];
+								}
+							}
+						},
+					]
+				},
+				{
+					test: [/\.vert$/, /\.frag$/],
+					use: 'raw-loader'
 				}
-			],*/
-			title: Config.metatags.title,
-			/*window: {
-				env: {
-					apiHost: 'http://myapi.com/api/v1'
+			]
+		},
+		plugins: [
+			new webpack.DefinePlugin({
+				'CANVAS_RENDERER': JSON.stringify(true),
+				'WEBGL_RENDERER': JSON.stringify(true),
+				'COIN': (env && env.COIN) ? JSON.stringify(env.COIN) : undefined
+			}),
+			new HtmlWebpackPlugin({
+				inject: false,
+				template: 'htmlWebpackTemplate.ejs',
+				appMountId: 'canvas',
+				meta: [
+					{name: 'description', content: Config.metatags.description},
+					{property: 'og:type', content: 'website'},
+					{property: 'og:title', content: Config.metatags.title},
+					{property: 'og:description', content: Config.metatags.description},
+					{property: 'og:image', content: Config.metatags.ogImage},
+					{property: 'og:image:secure_url', content: Config.metatags.ogImage},
+					{property: 'og:url', content: Config.metatags.ogURL},
+					{property: 'og:image:width', content: Config.metatags.ogImageWidth},
+					{property: 'og:image:height', content: Config.metatags.ogImageHeight},
+					{property: 'fb:app_id', content: Config.appId}
+				],
+				minify: false,
+				mobile: true,
+				/*links: [
+					'https://fonts.googleapis.com/css?family=Roboto',
+					{
+						href: '/apple-touch-icon.png',
+						rel: 'apple-touch-icon',
+						sizes: '180x180'
+					},
+					{
+						href: '/favicon-32x32.png',
+						rel: 'icon',
+						sizes: '32x32',
+						type: 'image/png'
+					}
+				],*/
+				title: Config.metatags.title,
+				/*window: {
+					env: {
+						apiHost: 'http://myapi.com/api/v1'
+					}
+				}*/
+			}),
+			new OfflinePlugin({
+				externals: cachingArray,
+				ServiceWorker: {
+					events: true
 				}
-			}*/
-		}),
-		new OfflinePlugin({
-			externals: cachingArray,
-			ServiceWorker: {
-				events: true
-			}
-		})
-	]
+			})
+		]
+	};
 };
