@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import Config from '../config';
-import {fbGetUsers} from '../services/Firebase';
+import {fbAddScore, fbGetUsers} from '../services/Firebase';
 
 export default class Leaderboard extends Phaser.Scene {
 	constructor () {
@@ -10,7 +10,7 @@ export default class Leaderboard extends Phaser.Scene {
 		this.screenWidth = null;
 		this.screenHeight = null;
 	}
-	create() {
+	create(config) {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
@@ -28,7 +28,33 @@ export default class Leaderboard extends Phaser.Scene {
 		}, this);
 
 		fbGetUsers().then((response) => {
-			this.showUsers(response);
+			if (COIN && COIN === 'ardor') {
+				this.showUsers(response);
+				return;
+			}
+			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
+				while(true) {
+					let prompt = window.prompt('Congrats, you made it to the Leaderboard! Please enter your Steemit name', '');
+					if (prompt === null) {
+						//aborted
+						break;
+					}
+					if (prompt && prompt.length) {
+						fbAddScore(prompt, config.score);
+						response.push({
+							username: prompt,
+							score: config.score
+						});
+						response.sort((a, b) => {
+							return b.score - a.score;
+						});
+						break;
+					}
+				}
+				this.showUsers(response);
+			} else {
+				this.showUsers(response);
+			}
 		});
 	}
 	showUsers(userArray) {

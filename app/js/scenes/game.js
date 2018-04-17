@@ -317,7 +317,11 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
 
-		fbGetUsers().then((response) => {
+		//deactivate leaderboard input for ardor
+		/*if (COIN && COIN === 'ardor') {
+			return;
+		}*/
+		/*fbGetUsers().then((response) => {
 			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
 				while(true) {
 					let prompt = window.prompt('Congrats, you made it to the Leaderboard! Please enter your Steemit name', '');
@@ -331,7 +335,7 @@ export default class Game extends Phaser.Scene {
 					}
 				}
 			}
-		});
+		});*/
 	}
 	startGame() {
 		Facebook.log('startGame');
@@ -369,6 +373,6 @@ export default class Game extends Phaser.Scene {
 	}
 	showLeaderboard() {
 		Facebook.log('showLeaderboard');
-		this.scene.start('Leaderboard');
+		this.scene.start('Leaderboard', {score: this.currentScore});
 	}
 }
