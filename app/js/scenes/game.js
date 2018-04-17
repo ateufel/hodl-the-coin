@@ -78,6 +78,8 @@ export default class Game extends Phaser.Scene {
 		this.txtLikeGame = this.add.text(this.screenWidth / 2, this.screenHeight - 200, 'LIKE THIS GAME?', Config.fonts.likeGame);
 		this.txtLikeGame.setShadow(0, 4, Config.fonts.likeGame.shadow, 0);
 		this.txtLikeGame.setOrigin(0.5);
+		this.txtLikeGame.setInteractive();
+		this.txtLikeGame.on('clicked', this.openSteemit, this);
 		this.txtFollowSteemit = this.add.text(this.screenWidth / 2, this.screenHeight - 150, 'FOLLOW US ON STEEMIT', Config.fonts.followSteemit);
 		this.txtFollowSteemit.setShadow(0, 2, Config.fonts.followSteemit.shadow, 0);
 		this.txtFollowSteemit.setOrigin(0.5);
@@ -102,12 +104,6 @@ export default class Game extends Phaser.Scene {
 		this.txtGameOverScore = this.add.text(this.screenWidth / 2 + 10, 250, '0', Config.fonts.gameOverScoreValues);
 		this.txtGameOverScore.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
 		this.txtGameOverScore.setOrigin(0, 0);
-		/*this.txtGameOverScoreMetaBest = this.add.text(this.screenWidth / 2 - 10, 300, 'BEST', Config.fonts.gameOverScoreMeta);
-		this.txtGameOverScoreMetaBest.setShadow(0, 4, Config.fonts.gameOverScoreMeta.shadow, 0);
-		this.txtGameOverScoreMetaBest.setOrigin(1, 0);
-		this.txtGameOverScoreBest = this.add.text(this.screenWidth / 2 + 10, 300, '0', Config.fonts.gameOverScoreValues);
-		this.txtGameOverScoreBest.setShadow(0, 4, Config.fonts.gameOverScoreValues.shadow, 0);
-		this.txtGameOverScoreBest.setOrigin(0, 0);*/
 		let buttonRestart = this.add.sprite(this.screenWidth / 2, 350, 'restart', 1).setInteractive().setScale(0.5);
 		buttonRestart.on('pointerover', () => {
 			buttonRestart.setFrame(0);
@@ -138,8 +134,6 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.add(this.gameover);
 		this.groupGameOver.add(this.txtGameOverScoreMeta);
 		this.groupGameOver.add(this.txtGameOverScore);
-		/*this.groupGameOver.add(this.txtGameOverScoreMetaBest);
-		this.groupGameOver.add(this.txtGameOverScoreBest);*/
 		this.groupGameOver.add(buttonRestart);
 		//this.groupGameOver.add(buttonShare);
 		this.groupGameOver.add(buttonLeaderboard);

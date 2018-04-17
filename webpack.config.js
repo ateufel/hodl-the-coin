@@ -131,7 +131,10 @@ module.exports = {
 			}*/
 		}),
 		new OfflinePlugin({
-			externals: cachingArray
+			externals: cachingArray,
+			ServiceWorker: {
+				events: true
+			}
 		})
 	]
 };

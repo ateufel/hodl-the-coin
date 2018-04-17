@@ -34,8 +34,8 @@ export default class Preloader extends Phaser.Scene {
 		//this.load.spritesheet('share', 'img/share_sprites.png', {frameWidth: 250, frameHeight: 80});
 		this.load.spritesheet('leaderboard', 'img/leaderboard_sprites.png', {frameWidth: 394, frameHeight: 80});
 		this.load.spritesheet('coin', 'img/coin_steemit.png', {frameWidth: 200, frameHeight: 88});
-		/*this.load.audio('theme', [
+		this.load.audio('theme', [
 			'audio/music_main.mp3'
-		]);*/
+		]);
 	}
 }

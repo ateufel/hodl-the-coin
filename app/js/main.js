@@ -7,7 +7,23 @@ import Facebook from './services/Facebook';
 import styles from '../css/main.css';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 
-OfflinePluginRuntime.install();
+OfflinePluginRuntime.install({
+	onUpdating: () => {
+		//console.log('SW Event:', 'onUpdating');
+	},
+	onUpdateReady: () => {
+		//console.log('SW Event:', 'onUpdateReady');
+		alert('new version, reloading...');
+		OfflinePluginRuntime.applyUpdate();
+	},
+	onUpdated: () => {
+		//console.log('SW Event:', 'onUpdated');
+		window.location.reload();
+	},
+	onUpdateFailed: () => {
+		//console.log('SW Event:', 'onUpdateFailed');
+	}
+});
 Facebook.init();
 
 const config = {
