@@ -32,7 +32,7 @@ export default class Leaderboard extends Phaser.Scene {
 				this.showUsers(response);
 				return;
 			}
-			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
+			if (!response.length || response[response.length - 1].score < config.score) {
 				while(true) {
 					let prompt = window.prompt('Congrats, you made it to the Leaderboard! Please enter your Steemit name', '');
 					if (prompt === null) {
@@ -58,6 +58,7 @@ export default class Leaderboard extends Phaser.Scene {
 		});
 	}
 	showUsers(userArray) {
+		userArray = userArray.slice(0, 10);
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
