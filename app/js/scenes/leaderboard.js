@@ -59,6 +59,12 @@ export default class Leaderboard extends Phaser.Scene {
 	}
 	showUsers(userArray) {
 		userArray = userArray.slice(0, 10);
+		userArray = userArray.map((elem) => {
+			return {
+				...elem,
+				username: elem.username.charAt(0) === '@' ? elem.username : `@${elem.username}`
+			};
+		});
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
