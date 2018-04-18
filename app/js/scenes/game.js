@@ -111,22 +111,16 @@ export default class Game extends Phaser.Scene {
 			buttonRestart.setFrame(1);
 		}, this);
 		buttonRestart.on('pointerdown', this.showStartMenu, this);
-		/*let buttonShare = this.add.sprite(this.screenWidth / 2, 450, 'share', 1).setInteractive().setScale(0.5);
-		buttonShare.on('pointerover', () => {
-			buttonShare.setFrame(0);
-		}, this);
-		buttonShare.on('pointerout', () => {
-			buttonShare.setFrame(1);
-		}, this);
-		buttonShare.on('pointerdown', Facebook.share, this);*/
-		let buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 400, 'leaderboard', 1).setInteractive().setScale(0.5);
-		buttonLeaderboard.on('pointerover', () => {
-			buttonLeaderboard.setFrame(0);
-		}, this);
-		buttonLeaderboard.on('pointerout', () => {
-			buttonLeaderboard.setFrame(1);
-		}, this);
-		buttonLeaderboard.on('pointerdown', this.showLeaderboard, this);
+		if (!COIN) {
+			this.buttonLeaderboard = this.add.sprite(this.screenWidth / 2, 400, 'leaderboard', 1).setInteractive().setScale(0.5);
+			this.buttonLeaderboard.on('pointerover', () => {
+				this.buttonLeaderboard.setFrame(0);
+			}, this);
+			this.buttonLeaderboard.on('pointerout', () => {
+				this.buttonLeaderboard.setFrame(1);
+			}, this);
+			this.buttonLeaderboard.on('pointerdown', this.showLeaderboard, this);
+		}
 		//game over group
 		this.groupGameOver = this.add.group();
 		this.groupGameOver.add(rectOverlay);
@@ -134,8 +128,9 @@ export default class Game extends Phaser.Scene {
 		this.groupGameOver.add(this.txtGameOverScoreMeta);
 		this.groupGameOver.add(this.txtGameOverScore);
 		this.groupGameOver.add(buttonRestart);
-		//this.groupGameOver.add(buttonShare);
-		this.groupGameOver.add(buttonLeaderboard);
+		if (this.buttonLeaderboard) {
+			this.groupGameOver.add(this.buttonLeaderboard);
+		}
 		this.groupGameOver.children.entries.forEach(
 			(sprite) => {
 				sprite.visible = false;
