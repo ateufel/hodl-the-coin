@@ -79,7 +79,11 @@ export default class Game extends Phaser.Scene {
 		this.txtLikeGame.setOrigin(0.5);
 		this.txtLikeGame.setInteractive();
 		this.txtLikeGame.on('clicked', this.openSteemit, this);
-		this.txtFollowSteemit = this.add.text(this.screenWidth / 2, this.screenHeight - 150, 'FOLLOW US ON STEEMIT', Config.fonts.followSteemit);
+		if (COIN && COIN === 'ardor') {
+			this.txtFollowSteemit = this.add.text(this.screenWidth / 2, this.screenHeight - 150, 'FOLLOW US ON TWITTER', Config.fonts.followSteemit);
+		} else {
+			this.txtFollowSteemit = this.add.text(this.screenWidth / 2, this.screenHeight - 150, 'FOLLOW US ON STEEMIT', Config.fonts.followSteemit);
+		}
 		this.txtFollowSteemit.setShadow(0, 2, Config.fonts.followSteemit.shadow, 0);
 		this.txtFollowSteemit.setOrigin(0.5);
 		this.txtFollowSteemit.setInteractive();
@@ -359,7 +363,11 @@ export default class Game extends Phaser.Scene {
 	}
 	openSteemit() {
 		Facebook.log('openSteemit');
-		window.location.href = 'https://www.steemit.com/@limesoda';
+		if (COIN && COIN === 'ardor') {
+			window.location.href = 'https://twitter.com/LimeSoda_at';
+		} else {
+			window.location.href = 'https://www.steemit.com/@limesoda';
+		}
 	}
 	openLimeSoda() {
 		Facebook.log('openLimeSoda');
