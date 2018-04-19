@@ -281,6 +281,11 @@ export default class Game extends Phaser.Scene {
 		while (this.pipes.children.entries.length) {
 			this.pipes.getFirstAlive().destroy();
 		}
+
+		this.input.keyboard.createCombo('iddqd');
+		this.input.keyboard.on('keycombomatch', (event) => {
+			//TODO god mode
+		});
 	}
 	shutdown() {
 		this.sys.game.events.off('resize', this.resize, this);
@@ -314,26 +319,6 @@ export default class Game extends Phaser.Scene {
 
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
-
-		//deactivate leaderboard input for ardor
-		/*if (COIN && COIN === 'ardor') {
-			return;
-		}*/
-		/*fbGetUsers().then((response) => {
-			if (!response.length || response.length < 10 || (response[response.length - 1].score) < this.currentScore) {
-				while(true) {
-					let prompt = window.prompt('Congrats, you made it to the Leaderboard! Please enter your Steemit name', '');
-					if (prompt === null) {
-						//aborted
-						break;
-					}
-					if (prompt && prompt.length) {
-						fbAddScore(prompt, this.currentScore);
-						break;
-					}
-				}
-			}
-		});*/
 	}
 	startGame() {
 		Facebook.log('startGame');
@@ -360,6 +345,8 @@ export default class Game extends Phaser.Scene {
 				sprite.visible = false;
 			}
 		);
+
+		this.input.keyboard.off('keycombomatch');
 	}
 	openSteemit() {
 		Facebook.log('openSteemit');
