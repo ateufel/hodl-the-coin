@@ -20,6 +20,7 @@ export default class Game extends Phaser.Scene {
 		this.isRunning = false;
 		this.bgSound = null;
 		this.lines = [];
+		this.isGodMode = false;
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
@@ -159,6 +160,8 @@ export default class Game extends Phaser.Scene {
 		if (!this.bgSound) {
 			this.bgSound = this.sound.add('theme', {loop: true}).play();
 		}
+
+		this.input.keyboard.createCombo('iddqd');
 	}
 	update(time, delta) {
 		this.bgTile.tilePositionX += delta * 0.03;
@@ -282,9 +285,10 @@ export default class Game extends Phaser.Scene {
 			this.pipes.getFirstAlive().destroy();
 		}
 
-		this.input.keyboard.createCombo('iddqd');
 		this.input.keyboard.on('keycombomatch', (event) => {
-			//TODO god mode
+			this.isGodMode = true;
+			alert('god mode on');
+			this.cameras.main.flash(500);
 		});
 	}
 	shutdown() {
@@ -319,6 +323,8 @@ export default class Game extends Phaser.Scene {
 
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
+
+		this.cameras.main.shake(500);
 	}
 	startGame() {
 		Facebook.log('startGame');

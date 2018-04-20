@@ -27,6 +27,9 @@ export default class Pipe extends Phaser.GameObjects.Sprite {
 		}
 	}
 	handleHit = () => {
+		if (this.scene.isGodMode) {
+			return;
+		}
 		this.scene.gameOver();
 	};
 	stop = () => {
