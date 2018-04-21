@@ -32,15 +32,13 @@ const Facebook = {
 		});
 	},
 	log: (eventName, customData) => {
-		if (!FB) {
-			return;
+		if (FB && FB.AppEvents) {
+			if (customData) {
+				FB.AppEvents.logEvent(eventName, null, customData);
+			} else {
+				FB.AppEvents.logEvent(eventName);
+			}
 		}
-		if (customData) {
-			FB.AppEvents.logEvent(eventName, null, customData);
-		} else {
-			FB.AppEvents.logEvent(eventName);
-		}
-
 	}
 };
 
