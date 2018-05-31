@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 
+/**
+ * This class is just for loading the loader image
+ */
 export default class Boot extends Phaser.Scene {
 	constructor () {
 		super({

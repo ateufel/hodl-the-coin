@@ -3,6 +3,9 @@ import Coin from '../sprites/coin';
 import Config from '../config';
 import Facebook from '../services/Facebook';
 
+/**
+ * Main Game Scene
+ */
 export default class Game extends Phaser.Scene {
 	constructor () {
 		super({

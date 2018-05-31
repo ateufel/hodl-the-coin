@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import Config from '../config';
 import {fbAddScore, fbGetUsers} from '../services/Firebase';
 
+/**
+ * Leaderboard Scene
+ */
 export default class Leaderboard extends Phaser.Scene {
 	constructor () {
 		super({
