@@ -21,12 +21,10 @@
     "lint": "eslint -c .eslintrc -f checkstyle app > eslint.xml",
     "lint:local": "eslint app",
     "stats": "webpack -p --config ./webpack.prod.config.js --profile --json > stats.json",
-    "docker:start": "cd docker && docker-compose up -d",
-    "docker:stop": "cd docker && docker-compose stop",
-    "docker:rebuild": "cd docker && docker-compose stop && docker-compose up -d --build",
     "build:all": "npm run build:prod && npm run build:prod:ardor"
   },
-  "author": "Andreas Teufel",
+  "author": "Andreas Teufel <a.teufel@limesoda.com>",
+  "license": "Apache-2.0",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",

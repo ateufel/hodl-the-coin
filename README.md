@@ -1,6 +1,19 @@
-# Hodl the Coin #
+# Hodl the Coin v1 #
 
-ES6 + Phaser Engine
+Blockain Game built for Steemit and Ardor.
+
+## Technology
+* ESLint
+* JavaScript ES6 with Babel
+* Webpack
+* Firebase (Cloud Firestore)
+* Phaser Engine
+* Service Workers (offline-plugin)
+
+## Usage
+
+* `yarn install`
+* `yarn run serve` or `yarn run serve:ardor`
 
 ## Links
 * https://github.com/lean/phaser-es6-webpack
@@ -8,4 +21,4 @@ ES6 + Phaser Engine
 * http://labs.phaser.io/
 
 ## TODO
-* set global scaling factor: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
+* Set global scaling factor?: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
