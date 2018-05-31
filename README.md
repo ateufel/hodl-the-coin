@@ -21,4 +21,5 @@ Blockain Game built for Steemit and Ardor.
 * http://labs.phaser.io/
 
 ## TODO
+* Separate game scene into smaller pieces (background class, pipe handler, menu handler, ...)
 * Set global scaling factor?: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/

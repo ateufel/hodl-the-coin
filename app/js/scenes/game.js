@@ -11,33 +11,46 @@ export default class Game extends Phaser.Scene {
 		super({
 			key: 'Game'
 		});
+		//hold the screen dimensions
 		this.screenWidth = null;
 		this.screenHeight = null;
+		//instance variable for accessing the player object
 		this.player = null;
+		//array to hold all the existing pipes
 		this.pipes = [];
+		//score game object and score counter
 		this.txtScore = null;
 		this.currentScore = 0;
+		//3d camera for the animated floor
 		this.camera3D = null;
+		//background elements, including the animated floor
 		this.bgElements = [];
+		//starting x position of background elements
 		this.startX = 0;
+		//boolean to check if game is running
 		this.isRunning = false;
+		//bg sound controller
 		this.bgSound = null;
-		this.lines = [];
+		//variable for god mode cheat
 		this.isGodMode = false;
 	}
 	create() {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
+		//tile sprite for the background clouds
 		this.bgTile = this.add.tileSprite(0, 0, this.screenWidth, this.screenHeight, 'bg_sprite').setOrigin(0, 0).setAlpha(0.5).setDepth(-1000);
 
+		//game group for background stars
 		this.starGroup = this.add.group({key: 'star', frameQuantity: 15});
+		//spread the group items randomly in a specific rectangle and randomly set alpha and size
 		Phaser.Actions.RandomRectangle(this.starGroup.getChildren(), new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight / 2));
 		Phaser.Actions.SetAlpha(this.starGroup.getChildren(), 0.5, 0.5 / 15);
 		Phaser.Actions.SetScale(this.starGroup.getChildren(), 0.5, 0.5, 0.2 / 15, 0.2 / 15);
 		this.starGroup.children.entries.forEach(
 			(sprite) => {
 				this.physics.world.enable(sprite);
+				//different moving speed, depending on the star alpha
 				sprite.body.setVelocityX(-10 * sprite.alpha);
 			}
 		);
@@ -47,15 +60,14 @@ export default class Game extends Phaser.Scene {
 		this.bgElements = this.camera3D.createRect({x: 30, y: 1, z: 20}, 32, 'bg_ellipse');
 		this.startX = this.bgElements[this.bgElements.length - 1].x;
 
-		//for the lines
-		this.graphics = this.add.graphics({lineStyle: {width: 4, color: 0xffffff, alpha: 1}});
-
+		//create player object
 		this.player = new Coin({
 			scene: this,
 			x: this.screenWidth / 2 + 100,
 			y: 150
 		});
 
+		//add pipes group and timer to create new pipes
 		this.pipes = this.add.group();
 		this.timedEvent = this.time.addEvent({
 			delay: 1500,
@@ -99,7 +111,7 @@ export default class Game extends Phaser.Scene {
 		this.groupStartMenu.add(this.txtLikeGame);
 		this.groupStartMenu.add(this.txtFollowSteemit);
 
-		//game over
+		//game over menu
 		let rectOverlay = this.add.graphics({fillStyle: {color: 0x000000}});
 		rectOverlay.fillRectShape(new Phaser.Geom.Rectangle(0, 0, this.screenWidth, this.screenHeight));
 		rectOverlay.alpha = 0.8;
@@ -153,6 +165,7 @@ export default class Game extends Phaser.Scene {
 
 		this.showStartMenu();
 
+		//general game object click handler
 		this.input.on('gameobjectup', (pointer, gameObject) => {
 			gameObject.emit('clicked', gameObject);
 		}, this);
@@ -161,11 +174,14 @@ export default class Game extends Phaser.Scene {
 		this.events.once('shutdown', this.shutdown, this);
 
 		if (!this.bgSound) {
+			//if not started yet, start background sound in a loop
 			this.bgSound = this.sound.add('theme', {loop: true}).play();
 		}
 
+		//god mode cheat :)
 		this.input.keyboard.createCombo('iddqd');
 	}
+	//update function, gets called on a regular basis (ideally 60 times per second)
 	update(time, delta) {
 		this.bgTile.tilePositionX += delta * 0.03;
 		this.starGroup.children.entries.forEach(
@@ -176,6 +192,7 @@ export default class Game extends Phaser.Scene {
 			}
 		);
 
+		//if game is not running (anymore) do no animate stuff
 		if (!this.isRunning) {
 			return;
 		}
@@ -189,18 +206,6 @@ export default class Game extends Phaser.Scene {
 			}
 		}
 
-		//move this.lines to the left
-		this.graphics.clear();
-		for(let i = 0; i < this.lines.length; i++) {
-			Phaser.Geom.Line.Offset(this.lines[i], -delta * 0.25, 0);
-			if (this.lines[i].y1 > this.lines[i].y2) {
-				this.graphics.lineStyle(4, 0x49ff8d);
-			} else {
-				this.graphics.lineStyle(4, 0xff4a7c);
-			}
-			this.graphics.strokeLineShape(this.lines[i]);
-		}
-
 		//update sub-components
 		this.pipes.children.entries.forEach(
 			(sprite) => {
@@ -209,36 +214,7 @@ export default class Game extends Phaser.Scene {
 		);
 		this.player.update();
 	}
-	addLine() {
-		this.screenWidth = this.sys.canvas.width;
-		this.screenHeight = this.sys.canvas.height;
-
-		let line;
-		if (this.lines.length) {
-			line = new Phaser.Geom.Line(this.lines[this.lines.length - 1].x2, this.lines[this.lines.length - 1].y2, this.player.x, this.player.y);
-		} else {
-			if (Math.ceil(this.player.x) <= Math.ceil(this.screenWidth * 0.3)) {
-				line = new Phaser.Geom.Line(0, this.screenHeight / 2, this.player.x, this.player.y);
-			} else {
-				return;
-			}
-		}
-		this.lines.push(line);
-		this.graphics.clear();
-		for(let i = 0; i < this.lines.length; i++) {
-			if(this.lines[i].right < 0) {
-				this.lines.splice(i--, 1);
-			}
-			else {
-				if (this.lines[i].y1 >this.lines[i].y2) {
-					this.graphics.lineStyle(4, 0x49ff8d);
-				} else {
-					this.graphics.lineStyle(4, 0xff4a7c);
-				}
-				this.graphics.strokeLineShape(this.lines[i]);
-			}
-		}
-	}
+	//add new pipes, will get called automatically with the timer callback
 	addPipes() {
 		if (!this.isRunning) {
 			return;
@@ -260,6 +236,7 @@ export default class Game extends Phaser.Scene {
 			x: this.screenWidth,
 			y: yPipe + 732 + pipeGap
 		}));
+		//score should always be on top
 		this.txtScore.setDepth(1);
 	}
 	increaseScore() {
@@ -288,14 +265,12 @@ export default class Game extends Phaser.Scene {
 			this.pipes.getFirstAlive().destroy();
 		}
 
+		//keyboard handler for god mode cheat - only works on the main screen
 		this.input.keyboard.on('keycombomatch', (event) => {
 			this.isGodMode = true;
 			alert('god mode on');
 			this.cameras.main.flash(500);
 		});
-	}
-	shutdown() {
-		this.sys.game.events.off('resize', this.resize, this);
 	}
 	gameOver() {
 		if (this.player.isDead || !this.isRunning) {
@@ -304,6 +279,7 @@ export default class Game extends Phaser.Scene {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
+		//set game over parameters, show game over menu items and stop pipes
 		this.player.isDead = true;
 		this.isRunning = false;
 		this.pipes.children.entries.forEach(
@@ -321,18 +297,15 @@ export default class Game extends Phaser.Scene {
 		this.txtScore.visible = false;
 		this.player.visible = false;
 
-		this.graphics.clear();
-		this.lines = [];
-
 		this.groupGameOver.setDepth(1);
 		this.txtPoweredBy.setDepth(1);
 
+		//shake the camera for 500 milliseconds
 		this.cameras.main.shake(500);
 	}
 	startGame() {
 		Facebook.log('startGame');
 
-		//TODO remove menu items with animation and then start game (after a small timeout)
 		this.tweens.add({
 			targets: this.player,
 			x: this.screenWidth * 0.3,
