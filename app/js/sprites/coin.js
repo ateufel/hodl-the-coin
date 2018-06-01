@@ -1,3 +1,6 @@
+/**
+ * Coin class - player handler
+ */
 export default class Coin extends Phaser.GameObjects.Sprite {
 	constructor(config) {
 		super(config.scene, config.x, config.y, 'coin');
@@ -51,6 +54,7 @@ export default class Coin extends Phaser.GameObjects.Sprite {
 	startGame() {
 		this.body.setGravity(0, 2500);
 
+		//remove existing pointer event to avoid double clicks
 		this.scene.input.off('pointerdown');
 		this.scene.input.on('pointerdown', () => {
 			if (this.isDead || !this.scene.isRunning) {

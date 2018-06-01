@@ -1,3 +1,6 @@
+/**
+ * Pipe class for green and red pipes
+ */
 export default class Pipe extends Phaser.GameObjects.Sprite {
 	constructor(config) {
 		super(config.scene, config.x, config.y, `pipe_${config.type}`);

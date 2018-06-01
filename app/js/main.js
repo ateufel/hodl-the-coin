@@ -3,10 +3,10 @@ import Boot from './scenes/boot';
 import Preloader from './scenes/preloader';
 import Leaderboard from './scenes/leaderboard';
 import Game from './scenes/game';
-import Facebook from './services/Facebook';
 import styles from '../css/main.css';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 
+//Initialization of Offline Plugin (Service Worker) - autoreload on new version
 OfflinePluginRuntime.install({
 	onUpdating: () => {
 		//console.log('SW Event:', 'onUpdating');
@@ -24,8 +24,8 @@ OfflinePluginRuntime.install({
 		//console.log('SW Event:', 'onUpdateFailed');
 	}
 });
-Facebook.init();
 
+//game config
 const config = {
 	width: window.innerWidth < 810 ? window.innerWidth : 810,
 	height: window.innerHeight,
@@ -51,6 +51,7 @@ const config = {
 };
 const game =  new Phaser.Game(config);
 
+//emit resize even to game engine
 window.onresize = () => {
 	game.renderer.resize(window.innerWidth, window.innerHeight);
 	game.events.emit('resize');

@@ -1,7 +1,6 @@
 import Pipe from '../sprites/pipe';
 import Coin from '../sprites/coin';
 import Config from '../config';
-import Facebook from '../services/Facebook';
 
 /**
  * Main Game Scene
@@ -304,8 +303,6 @@ export default class Game extends Phaser.Scene {
 		this.cameras.main.shake(500);
 	}
 	startGame() {
-		Facebook.log('startGame');
-
 		this.tweens.add({
 			targets: this.player,
 			x: this.screenWidth * 0.3,
@@ -331,7 +328,6 @@ export default class Game extends Phaser.Scene {
 		this.input.keyboard.off('keycombomatch');
 	}
 	openSteemit() {
-		Facebook.log('openSteemit');
 		if (COIN && COIN === 'ardor') {
 			window.location.href = 'https://twitter.com/LimeSoda_at';
 		} else {
@@ -339,11 +335,9 @@ export default class Game extends Phaser.Scene {
 		}
 	}
 	openLimeSoda() {
-		Facebook.log('openLimeSoda');
 		window.location.href = 'https://www.limesoda.com';
 	}
 	showLeaderboard() {
-		Facebook.log('showLeaderboard');
 		this.scene.start('Leaderboard', {score: this.currentScore});
 	}
 }

@@ -8,6 +8,7 @@ const path = require('path'),
 const HOST = process.env.HOST || '0.0.0.0',
 	PORT = process.env.PORT || 8080;
 
+//get image and audio files for offline plugin
 let cachingArray = [];
 fs.readdirSync(path.join(__dirname, 'app/img')).forEach(file => {
 	cachingArray.push('./img/' + file);
@@ -17,6 +18,7 @@ fs.readdirSync(path.join(__dirname, 'app/audio')).forEach(file => {
 });
 
 module.exports = env => {
+	//change build folder depending on coin type
 	const buildFolder = (env && env.COIN) ? `build-${env.COIN}` : 'build';
 
 	return {
@@ -45,10 +47,6 @@ module.exports = env => {
 					test: /\.js$/,
 					exclude: /(node_modules|build*)/,
 					loader: 'babel-loader',
-					/*query: {
-					 // https://github.com/babel/babel-loader#options
-					 cacheDirectory: true
-					 },*/
 					options: {
 						//presets and plugins in .babelrc
 					}
@@ -84,15 +82,15 @@ module.exports = env => {
 					]
 				},
 				{
-					test: [/\.vert$/, /\.frag$/],
+					test: [/\.vert$/, /\.frag$/], //needed for phaser engine
 					use: 'raw-loader'
 				}
 			]
 		},
 		plugins: [
 			new webpack.DefinePlugin({
-				'CANVAS_RENDERER': JSON.stringify(true),
-				'WEBGL_RENDERER': JSON.stringify(true),
+				'CANVAS_RENDERER': JSON.stringify(true), //needed for phaser engine
+				'WEBGL_RENDERER': JSON.stringify(true), //needed for phaser engine
 				'COIN': (env && env.COIN) ? JSON.stringify(env.COIN) : undefined
 			}),
 			new HtmlWebpackPlugin({
@@ -113,31 +111,12 @@ module.exports = env => {
 				],
 				minify: false,
 				mobile: true,
-				/*links: [
-					'https://fonts.googleapis.com/css?family=Roboto',
-					{
-						href: '/apple-touch-icon.png',
-						rel: 'apple-touch-icon',
-						sizes: '180x180'
-					},
-					{
-						href: '/favicon-32x32.png',
-						rel: 'icon',
-						sizes: '32x32',
-						type: 'image/png'
-					}
-				],*/
-				title: Config.metatags.title,
-				/*window: {
-					env: {
-						apiHost: 'http://myapi.com/api/v1'
-					}
-				}*/
+				title: Config.metatags.title
 			}),
 			new OfflinePlugin({
 				externals: cachingArray,
 				ServiceWorker: {
-					events: true
+					events: true //activate service worker events for update checking
 				}
 			})
 		]

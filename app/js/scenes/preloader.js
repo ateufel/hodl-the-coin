@@ -13,6 +13,7 @@ export default class Preloader extends Phaser.Scene {
 		this.screenWidth = this.sys.canvas.width;
 		this.screenHeight = this.sys.canvas.height;
 
+		//show loader image, preloaded in boot scene
 		const favicon = this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'favicon').setOrigin(0.5);
 
 		//preload all assets for the game

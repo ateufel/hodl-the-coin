@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * game config - needs to user module.exports because it is used in webpack too
+ */
 const Config = {
 	appId: '437382463348616',
 	devMode: true,
