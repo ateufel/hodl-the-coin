@@ -4,6 +4,7 @@
  * game config - needs to user module.exports because it is used in webpack too
  */
 const Config = {
+	firebaseAPIKey: 'xxx', //replace this with your own api key
 	serverPath: 'https://games.limesoda.com/hodl-steem',
 	metatags: {
 		title: 'Hodl the Coin by LimeSoda',
