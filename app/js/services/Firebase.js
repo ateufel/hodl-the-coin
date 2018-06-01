@@ -3,7 +3,7 @@ import 'firebase/firestore';
 
 //init firebase/firestore
 firebase.initializeApp({
-	apiKey: 'AIzaSyCj5bYfUdM9FxAmMX2AzZiK14I-Q8v12N4',
+	apiKey: 'AIzaSyCj5bYfUdM9FxAmMX2AzZiK14I-Q8v12N4', //storing the api key on github is perfectly fine, it´s supposed to be in the client code anyway
 	/*authDomain: '### FIREBASE AUTH DOMAIN ###',*/
 	projectId: 'hodl-the-coin'
 });
