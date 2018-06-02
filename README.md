@@ -1,6 +1,6 @@
 # Hodl the Coin v1 #
 
-Blockain Game built for Steemit and Ardor.
+Blockain Game built for STEEM and Ardor.
 
 ## Technology
 * ESLint
@@ -14,6 +14,8 @@ Blockain Game built for Steemit and Ardor.
 
 * `yarn install`
 * `yarn run serve` or `yarn run serve:ardor`
+
+You can build the production version of the whole game with `yarn run build:all`, or just the STEEM version with `yarn run build:prod`. For a large list of other npm scripts, check out the `package.json`.
 
 ## Links
 * https://github.com/lean/phaser-es6-webpack

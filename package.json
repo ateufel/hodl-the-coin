@@ -17,7 +17,6 @@
     "build": "npm run clean && npm run build:js:dev && npm run copy",
     "build:prod": "npm run build:js:prod && npm run copy",
     "build:prod:ardor": "npm run build:js:prod:ardor && npm run copy:ardor",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint -c .eslintrc -f checkstyle app > eslint.xml",
     "lint:local": "eslint app",
     "stats": "webpack -p --config ./webpack.prod.config.js --profile --json > stats.json",
