@@ -25,3 +25,4 @@ You can build the production version of the whole game with `yarn run build:all`
 ## TODO
 * Separate game scene into smaller pieces (background class, pipe handler, menu handler, ...)
 * Set global scaling factor?: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
+* improve security: https://steemit.com/hodlthecoin/@mys/how-to-achieve-unlimited-score-in-hodl-the-coin-steem-game-hack
